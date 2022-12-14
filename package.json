@@ -1,7 +1,7 @@
 {
-  "name": "react-date-range",
-  "version": "1.4.0",
-  "description": "A React component for choosing dates and date ranges.",
+  "name": "react-date-range-dayjs",
+  "version": "1.0.0",
+  "description": "A React component for choosing dates and date ranges based on react-date-range but using Dayjs as date manager.",
   "main": "dist/index.js",
   "scripts": {
     "start": "yarn build:css & styleguidist server",
@@ -17,22 +17,19 @@
     "date",
     "range",
     "datepicker",
-    "rangepicker"
+    "rangepicker",
+    "dayjs"
   ],
   "contributors": [
-    "Burak Can <neoberg@gmail.com> (https://github.com/burakcan)",
-    "Mehmet Kamil Morcay <mehmetmorcay@gmail.com> (https://github.com/mkg0)",
-    "Kamyar Ghasemlou <github@kamy.me> (https://github.com/kamyar)",
-    "Engin Semih Basmacı <semih.basmaci@gmail.com> (https://github.com/mortargrind)",
-    "Onur Kerimov <onurkerimov@gmail.com> (https://github.com/onurkerimov)"
+    "Henry Lagarde (https://github.com/tolares)"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/hypeserver/react-date-range"
+    "url": "https://github.com/tolares/react-date-range-dayjs"
   },
   "bugs": {
-    "url": "http://github.com/hypeserver/react-date-range/issues"
+    "url": "https://github.com/tolares/react-date-range-dayjs/issues"
   },
   "browserslist": [
     "defaults"
