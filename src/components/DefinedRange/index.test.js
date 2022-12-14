@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import DefinedRange from '../DefinedRange';
-import { isSameDay } from 'date-fns';
+import dayjs from 'dayjs';
 
 describe('DefinedRange tests', () => {
   test('Should call "renderStaticRangeLabel" callback correct amount of times according to the "hasCustomRendering" option', () => {
@@ -17,8 +17,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
             hasCustomRendering: true,
@@ -29,8 +29,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
           },
@@ -40,8 +40,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
             hasCustomRendering: true,
@@ -55,9 +55,7 @@ describe('DefinedRange tests', () => {
   });
 
   test('Should render dynamic static label contents correctly', () => {
-    const renderItalicLabelContent = () => (
-      <i className={'italic-label-content'}>{'Italic Content'}</i>
-    );
+    const renderItalicLabelContent = () => <i className={'italic-label-content'}>{'Italic Content'}</i>;
     const renderBoldLabelContent = () => <b className={'bold-label-content'}>{'Bold Content'}</b>;
     const renderSomethingElse = () => <img className={'random-image'} />;
 
@@ -84,8 +82,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
             hasCustomRendering: true,
@@ -96,8 +94,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
           },
@@ -107,8 +105,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
             hasCustomRendering: true,
@@ -119,8 +117,8 @@ describe('DefinedRange tests', () => {
             isSelected(range) {
               const definedRange = this.range();
               return (
-                isSameDay(range.startDate, definedRange.startDate) &&
-                isSameDay(range.endDate, definedRange.endDate)
+                dayjs(range.startDate).isSame(definedRange.startDate, 'day') &&
+                dayjs(range.endDate).isSame(definedRange.endDate, 'day')
               );
             },
             hasCustomRendering: true,

@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { format, parse, isValid, isEqual } from 'date-fns';
-
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/LocalizedFormat';
+dayjs.extend(LocalizedFormat);
 class DateInput extends PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -17,14 +18,14 @@ class DateInput extends PureComponent {
   componentDidUpdate(prevProps) {
     const { value } = prevProps;
 
-    if (!isEqual(value, this.props.value)) {
+    if (!dayjs(value).isSame(this.props.value)) {
       this.setState({ value: this.formatDate(this.props) });
     }
   }
 
-  formatDate({ value, dateDisplayFormat, dateOptions }) {
-    if (value && isValid(value)) {
-      return format(value, dateDisplayFormat, dateOptions);
+  formatDate({ value }) {
+    if (value && dayjs(value).isValid()) {
+      return dayjs(value).format('LL');
     }
     return '';
   }
@@ -36,10 +37,10 @@ class DateInput extends PureComponent {
       return;
     }
 
-    const { onChange, dateDisplayFormat, dateOptions } = this.props;
-    const parsed = parse(value, dateDisplayFormat, new Date(), dateOptions);
+    const { onChange, dateDisplayFormat = 'L' } = this.props;
+    const parsed = dayjs(value).format(dateDisplayFormat);
 
-    if (isValid(parsed)) {
+    if (parsed.isValid()) {
       this.setState({ changed: false }, () => onChange(parsed));
     } else {
       this.setState({ invalid: true });
@@ -64,9 +65,9 @@ class DateInput extends PureComponent {
   };
 
   render() {
+    value;
     const { className, readOnly, placeholder, ariaLabel, disabled, onFocus } = this.props;
     const { value, invalid } = this.state;
-
     return (
       <span className={classnames('rdrDateInput', className)}>
         <input

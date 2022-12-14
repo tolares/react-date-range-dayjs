@@ -167,7 +167,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "yearPicker": "rdrYearPicker",
         }
       }
-      value="-"
+      value="∞"
     />
     <InputRangeField
       key="1"
@@ -231,7 +231,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "yearPicker": "rdrYearPicker",
         }
       }
-      value="-"
+      value="∞"
     />
   </div>
 </div>

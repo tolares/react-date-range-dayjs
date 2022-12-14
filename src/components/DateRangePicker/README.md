@@ -5,13 +5,14 @@ This component wraps **[DefinedRange](#definedrange)** and **[Calendar](#calenda
 ```jsx inside Markdown
 import { addDays } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState([
   {
-    startDate: new Date(),
-    endDate: addDays(new Date(), 7),
-    key: 'selection'
-  }
+    startDate: dayjs(),
+    endDate: dayjs().add(7, 'day'),
+    key: 'selection',
+  },
 ]);
 
 <DateRangePicker
@@ -34,8 +35,8 @@ const [state, setState] = useState([
   {
     startDate: new Date(),
     endDate: addDays(new Date(), 7),
-    key: 'selection'
-  }
+    key: 'selection',
+  },
 ]);
 
 <DateRangePicker
@@ -60,13 +61,13 @@ const [state, setState] = useState({
   selection: {
     startDate: new Date(),
     endDate: null,
-    key: 'selection'
+    key: 'selection',
   },
   compare: {
     startDate: new Date(),
     endDate: addDays(new Date(), 3),
-    key: 'compare'
-  }
+    key: 'compare',
+  },
 });
 
 <DateRangePicker
@@ -90,19 +91,19 @@ const [state, setState] = useState({
   selection1: {
     startDate: addDays(new Date(), 1),
     endDate: null,
-    key: 'selection1'
+    key: 'selection1',
   },
   selection2: {
     startDate: addDays(new Date(), 4),
     endDate: addDays(new Date(), 8),
-    key: 'selection2'
+    key: 'selection2',
   },
   selection3: {
     startDate: addDays(new Date(), 8),
     endDate: addDays(new Date(), 10),
     key: 'selection3',
-    autoFocus: false
-  }
+    autoFocus: false,
+  },
 });
 
 <DateRangePicker
@@ -116,18 +117,19 @@ const [state, setState] = useState({
 ```jsx inside Markdown
 import { addDays } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection1: {
-    startDate: addDays(new Date(), -6),
-    endDate: new Date(),
-    key: 'selection1'
+    startDate: dayjs().subtract(6, 'day'),
+    endDate: dayjs(),
+    key: 'selection1',
   },
   selection2: {
-    startDate: addDays(new Date(), 1),
-    endDate: addDays(new Date(), 7),
-    key: 'selection2'
-  }
+    startDate: dayjs().add(1, 'day'),
+    endDate: dayjs().subtract(7, 'day'),
+    key: 'selection2',
+  },
 });
 
 <DateRangePicker
@@ -139,60 +141,62 @@ const [state, setState] = useState({
   direction="horizontal"
   ariaLabels={{
     dateInput: {
-      selection1: { startDate: "start date input of selction 1", endDate: "end date input of selction 1" },
-      selection2: { startDate: "start date input of selction 2", endDate: "end date input of selction 2" }
+      selection1: { startDate: 'start date input of selction 1', endDate: 'end date input of selction 1' },
+      selection2: { startDate: 'start date input of selction 2', endDate: 'end date input of selction 2' },
     },
-    monthPicker: "month picker",
-    yearPicker: "year picker",
-    prevButton: "previous month button",
-    nextButton: "next month button",
+    monthPicker: 'month picker',
+    yearPicker: 'year picker',
+    prevButton: 'previous month button',
+    nextButton: 'next month button',
   }}
 />;
 ```
 
 #### Example: Custom Day Cell Content
+
 Show orange dot only for weekend
 
 ```jsx inside Markdown
 import { addDays, format, isWeekend } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection1: {
-    startDate: addDays(new Date(), -6),
-    endDate: new Date(),
-    key: 'selection1'
+    startDate: dayjs().subtract(6, 'day'),
+    endDate: dayjs(),
+    key: 'selection1',
   },
   selection2: {
-    startDate: addDays(new Date(), 1),
-    endDate: addDays(new Date(), 7),
-    key: 'selection2'
-  }
+    startDate: dayjs().add(1, 'day'),
+    endDate: dayjs().subtract(7, 'day'),
+    key: 'selection2',
+  },
 });
 
 function customDayContent(day) {
   extraDot = null;
-  if (isWeekend(day)) {
+  if (day.isoWeekday() == 7 || day.isoWeekday() == 6) {
     extraDot = (
       <div
         style={{
-          height: "5px",
-          width: "5px",
-          borderRadius: "100%",
-          background: "orange",
-          position: "absolute",
+          height: '5px',
+          width: '5px',
+          borderRadius: '100%',
+          background: 'orange',
+          position: 'absolute',
           top: 2,
           right: 2,
         }}
       />
-    )
+    );
   }
   return (
     <div>
       {extraDot}
-      <span>{format(day, "d")}</span>
+      <span>{day.format('DD')}</span>
     </div>
-  )
+  );
 }
 
 <DateRangePicker
@@ -205,42 +209,44 @@ function customDayContent(day) {
   dayContentRenderer={customDayContent}
   ariaLabels={{
     dateInput: {
-      selection1: { startDate: "start date input of selction 1", endDate: "end date input of selction 1" },
-      selection2: { startDate: "start date input of selction 2", endDate: "end date input of selction 2" }
+      selection1: { startDate: 'start date input of selction 1', endDate: 'end date input of selction 1' },
+      selection2: { startDate: 'start date input of selction 2', endDate: 'end date input of selction 2' },
     },
-    monthPicker: "month picker",
-    yearPicker: "year picker",
-    prevButton: "previous month button",
-    nextButton: "next month button",
+    monthPicker: 'month picker',
+    yearPicker: 'year picker',
+    prevButton: 'previous month button',
+    nextButton: 'next month button',
   }}
 />;
 ```
 
-
 #### Example: Restrict Date Selection
+
 Restricts access for range selection to (-30, +30) days of current date.
+
 ```jsx inside Markdown
 import { addDays } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection: {
-    startDate: new Date(),
+    startDate: dayjs(),
     endDate: null,
-    key: 'selection'
+    key: 'selection',
   },
   compare: {
     startDate: new Date(),
-    endDate: addDays(new Date(), 3),
-    key: 'compare'
-  }
+    endDate: dayjs().add(3, 'day'),
+    key: 'compare',
+  },
 });
 
 <DateRangePicker
   onChange={item => setState({ ...state, ...item })}
   months={1}
-  minDate={addDays(new Date(), -30)}
-  maxDate={addDays(new Date(), 30)}
+  minDate={dayjs().subtract(30, 'day')}
+  maxDate={dayjs().add(30, 'day')}
   direction="vertical"
   scroll={{ enabled: true }}
   ranges={[state.selection, state.compare]}

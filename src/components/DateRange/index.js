@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Calendar from '../Calendar';
-import { rangeShape } from '../DayCell';
-import { findNextRangeIndex, generateStyles } from '../../utils';
-import { isBefore, differenceInCalendarDays, addDays, min, isWithinInterval, max } from 'date-fns';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isBetween from 'dayjs/plugin/isBetween';
+import { findNextRangeIndex, generateStyles } from '../../utils';
+import { rangeShape } from '../DayCell';
+import Calendar from '../Calendar';
 import coreStyles from '../../styles';
-
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isBetween);
 class DateRange extends Component {
   constructor(props, context) {
     super(props, context);
@@ -30,29 +33,29 @@ class DateRange extends Component {
     const selectedRange = ranges[focusedRangeIndex];
     if (!selectedRange || !onChange) return {};
     let { startDate, endDate } = selectedRange;
-    const now = new Date();
+    const now = dayjs();
     let nextFocusRange;
     if (!isSingleValue) {
       startDate = value.startDate;
       endDate = value.endDate;
     } else if (focusedRange[1] === 0) {
       // startDate selection
-      const dayOffset = differenceInCalendarDays(endDate || now, startDate);
+      const dayOffset = dayjs(endDate || now).diff(startDate, 'day');
       const calculateEndDate = () => {
         if (moveRangeOnFirstSelection) {
-          return addDays(value, dayOffset);
+          return dayjs(value).add(dayOffset, 'day');
         }
         if (retainEndDateOnFirstSelection) {
-          if (!endDate || isBefore(value, endDate)) {
-            return endDate;
+          if (!endDate || dayjs(value).isBefore(dayjs(endDate), 'day')) {
+            return dayjs(endDate);
           }
-          return value;
+          return dayjs(value);
         }
-        return value || now;
+        return dayjs(value) || dayjs();
       };
       startDate = value;
       endDate = calculateEndDate();
-      if (maxDate) endDate = min([endDate, maxDate]);
+      if (maxDate) endDate = dayjs.min([dayjs(endDate), dayjs(maxDate)]);
       nextFocusRange = [focusedRange[0], 1];
     } else {
       endDate = value;
@@ -60,23 +63,16 @@ class DateRange extends Component {
 
     // reverse dates if startDate before endDate
     let isStartDateSelected = focusedRange[1] === 0;
-    if (isBefore(endDate, startDate)) {
-      isStartDateSelected = !isStartDateSelected;
-      [startDate, endDate] = [endDate, startDate];
-    }
 
     const inValidDatesWithinRange = disabledDates.filter(disabledDate =>
-      isWithinInterval(disabledDate, {
-        start: startDate,
-        end: endDate,
-      })
+      disabledDate.isBetween(startDate, endDate, 'day')
     );
 
     if (inValidDatesWithinRange.length > 0) {
       if (isStartDateSelected) {
-        startDate = addDays(max(inValidDatesWithinRange), 1);
+        startDate = dayjs.max(inValidDatesWithinRange).add(1, 'day');
       } else {
-        endDate = addDays(min(inValidDatesWithinRange), -1);
+        endDate = dayjs.min(inValidDatesWithinRange).subtract(1, 'day');
       }
     }
 

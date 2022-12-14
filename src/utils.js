@@ -1,13 +1,5 @@
 import classnames from 'classnames';
-import {
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  differenceInCalendarDays,
-  differenceInCalendarMonths,
-  addDays,
-} from 'date-fns';
+import dayjs from 'dayjs';
 
 export function calcFocusDate(currentFocusedDate, props) {
   const { shownDate, date, months, ranges, focusedRange, displayMode } = props;
@@ -25,16 +17,16 @@ export function calcFocusDate(currentFocusedDate, props) {
       end: date,
     };
   }
-  targetInterval.start = startOfMonth(targetInterval.start || new Date());
-  targetInterval.end = endOfMonth(targetInterval.end || targetInterval.start);
-  const targetDate = targetInterval.start || targetInterval.end || shownDate || new Date();
+  targetInterval.start = (dayjs(targetInterval.start) || dayjs()).startOf('month');
+  targetInterval.end = (dayjs(targetInterval.end) || dayjs(targetInterval.start)).endOf('month');
+  const targetDate = targetInterval.start || targetInterval.end || shownDate || dayjs();
 
   // initial focus
   if (!currentFocusedDate) return shownDate || targetDate;
 
   // // just return targetDate for native scrolled calendars
   // if (props.scroll.enabled) return targetDate;
-  if (differenceInCalendarMonths(targetInterval.start, targetInterval.end) > months) {
+  if (targetInterval.start.diff(targetInterval.end, 'month') > months) {
     // don't change focused if new selection in view area
     return currentFocusedDate;
   }
@@ -50,13 +42,14 @@ export function findNextRangeIndex(ranges, currentRangeIndex = -1) {
 }
 
 export function getMonthDisplayRange(date, dateOptions, fixedHeight) {
-  const startDateOfMonth = startOfMonth(date, dateOptions);
-  const endDateOfMonth = endOfMonth(date, dateOptions);
-  const startDateOfCalendar = startOfWeek(startDateOfMonth, dateOptions);
-  let endDateOfCalendar = endOfWeek(endDateOfMonth, dateOptions);
-  if (fixedHeight && differenceInCalendarDays(endDateOfCalendar, startDateOfCalendar) <= 34) {
-    endDateOfCalendar = addDays(endDateOfCalendar, 7);
+  const startDateOfMonth = dayjs(date).startOf('month');
+  const endDateOfMonth = dayjs(date).endOf('month');
+  const startDateOfCalendar = startDateOfMonth.startOf('isoWeek');
+  let endDateOfCalendar = endDateOfMonth.endOf('isoWeek');
+  if (fixedHeight && endDateOfCalendar.diff(startDateOfCalendar, 'day') <= 34) {
+    endDateOfCalendar = endDateOfCalendar.add(7, 'day');
   }
+
   return {
     start: startDateOfCalendar,
     end: endDateOfCalendar,
@@ -76,4 +69,15 @@ export function generateStyles(sources) {
       return styles;
     }, {});
   return generatedStyles;
+}
+
+export function getIntervals(currentDay, closeDay) {
+  var currentDate = dayjs(currentDay);
+  var closeTime = dayjs(closeDay);
+  const dateRanges = [];
+  while (currentDate.isBefore(closeTime, 'day') || currentDate.isSame(closeTime, 'day')) {
+    dateRanges.push(currentDate.format());
+    currentDate = currentDate.add(1, 'day');
+  }
+  return dateRanges;
 }
