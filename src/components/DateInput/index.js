@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
-import LocalizedFormat from 'dayjs/plugin/LocalizedFormat';
-dayjs.extend(LocalizedFormat);
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+
+dayjs.extend(localizedFormat);
 class DateInput extends PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -11,7 +12,7 @@ class DateInput extends PureComponent {
     this.state = {
       invalid: false,
       changed: false,
-      value: this.formatDate(props),
+      value: this.formatDate(props)
     };
   }
 
@@ -97,13 +98,13 @@ DateInput.propTypes = {
   ariaLabel: PropTypes.string,
   className: PropTypes.string,
   onFocus: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 DateInput.defaultProps = {
   readOnly: true,
   disabled: false,
-  dateDisplayFormat: 'MMM D, YYYY',
+  dateDisplayFormat: 'MMM D, YYYY'
 };
 
 export default DateInput;
