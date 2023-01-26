@@ -3,7 +3,6 @@ This component wraps **[DefinedRange](#definedrange)** and **[Calendar](#calenda
 #### Example: 2 Month View
 
 ```jsx inside Markdown
-import { addDays } from 'date-fns';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
@@ -11,8 +10,8 @@ const [state, setState] = useState([
   {
     startDate: dayjs(),
     endDate: dayjs().add(7, 'day'),
-    key: 'selection',
-  },
+    key: 'selection'
+  }
 ]);
 
 <DateRangePicker
@@ -28,15 +27,15 @@ const [state, setState] = useState([
 #### Example: Backwards 2 Month View with preventSnapRefocus
 
 ```jsx inside Markdown
-import { addDays } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState([
   {
     startDate: new Date(),
-    endDate: addDays(new Date(), 7),
-    key: 'selection',
-  },
+    endDate: dayjs().add(7, 'day'),
+    key: 'selection'
+  }
 ]);
 
 <DateRangePicker
@@ -54,27 +53,27 @@ const [state, setState] = useState([
 #### Example: Vertical Infinite
 
 ```jsx inside Markdown
-import { addDays } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection: {
     startDate: new Date(),
     endDate: null,
-    key: 'selection',
+    key: 'selection'
   },
   compare: {
     startDate: new Date(),
-    endDate: addDays(new Date(), 3),
-    key: 'compare',
-  },
+    endDate: dayjs().add(3, 'day'),
+    key: 'compare'
+  }
 });
 
 <DateRangePicker
   onChange={item => setState({ ...state, ...item })}
   months={1}
-  minDate={addDays(new Date(), -300)}
-  maxDate={addDays(new Date(), 900)}
+  minDate={dayjs().add(-300, 'day')}
+  maxDate={dayjs().add(900, 'day')}
   direction="vertical"
   scroll={{ enabled: true }}
   ranges={[state.selection, state.compare]}
@@ -84,26 +83,26 @@ const [state, setState] = useState({
 #### Example: Multiple Range
 
 ```jsx inside Markdown
-import { addDays } from 'date-fns';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection1: {
-    startDate: addDays(new Date(), 1),
+    startDate: dayjs().add(1, 'day'),
     endDate: null,
-    key: 'selection1',
+    key: 'selection1'
   },
   selection2: {
-    startDate: addDays(new Date(), 4),
-    endDate: addDays(new Date(), 8),
-    key: 'selection2',
+    startDate: dayjs().add(4, 'day'),
+    endDate: dayjs().add(8, 'day'),
+    key: 'selection2'
   },
   selection3: {
-    startDate: addDays(new Date(), 8),
-    endDate: addDays(new Date(), 10),
+    startDate: dayjs().add(8, 'day'),
+    endDate: dayjs().add(10, 'day'),
     key: 'selection3',
-    autoFocus: false,
-  },
+    autoFocus: false
+  }
 });
 
 <DateRangePicker
@@ -115,7 +114,6 @@ const [state, setState] = useState({
 #### Example: Insert Aria-label
 
 ```jsx inside Markdown
-import { addDays } from 'date-fns';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
@@ -123,13 +121,13 @@ const [state, setState] = useState({
   selection1: {
     startDate: dayjs().subtract(6, 'day'),
     endDate: dayjs(),
-    key: 'selection1',
+    key: 'selection1'
   },
   selection2: {
     startDate: dayjs().add(1, 'day'),
     endDate: dayjs().subtract(7, 'day'),
-    key: 'selection2',
-  },
+    key: 'selection2'
+  }
 });
 
 <DateRangePicker
@@ -142,12 +140,12 @@ const [state, setState] = useState({
   ariaLabels={{
     dateInput: {
       selection1: { startDate: 'start date input of selction 1', endDate: 'end date input of selction 1' },
-      selection2: { startDate: 'start date input of selction 2', endDate: 'end date input of selction 2' },
+      selection2: { startDate: 'start date input of selction 2', endDate: 'end date input of selction 2' }
     },
     monthPicker: 'month picker',
     yearPicker: 'year picker',
     prevButton: 'previous month button',
-    nextButton: 'next month button',
+    nextButton: 'next month button'
   }}
 />;
 ```
@@ -157,7 +155,6 @@ const [state, setState] = useState({
 Show orange dot only for weekend
 
 ```jsx inside Markdown
-import { addDays, format, isWeekend } from 'date-fns';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
@@ -165,13 +162,13 @@ const [state, setState] = useState({
   selection1: {
     startDate: dayjs().subtract(6, 'day'),
     endDate: dayjs(),
-    key: 'selection1',
+    key: 'selection1'
   },
   selection2: {
     startDate: dayjs().add(1, 'day'),
     endDate: dayjs().subtract(7, 'day'),
-    key: 'selection2',
-  },
+    key: 'selection2'
+  }
 });
 
 function customDayContent(day) {
@@ -186,7 +183,7 @@ function customDayContent(day) {
           background: 'orange',
           position: 'absolute',
           top: 2,
-          right: 2,
+          right: 2
         }}
       />
     );
@@ -210,12 +207,12 @@ function customDayContent(day) {
   ariaLabels={{
     dateInput: {
       selection1: { startDate: 'start date input of selction 1', endDate: 'end date input of selction 1' },
-      selection2: { startDate: 'start date input of selction 2', endDate: 'end date input of selction 2' },
+      selection2: { startDate: 'start date input of selction 2', endDate: 'end date input of selction 2' }
     },
     monthPicker: 'month picker',
     yearPicker: 'year picker',
     prevButton: 'previous month button',
-    nextButton: 'next month button',
+    nextButton: 'next month button'
   }}
 />;
 ```
@@ -225,7 +222,6 @@ function customDayContent(day) {
 Restricts access for range selection to (-30, +30) days of current date.
 
 ```jsx inside Markdown
-import { addDays } from 'date-fns';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
@@ -233,13 +229,13 @@ const [state, setState] = useState({
   selection: {
     startDate: dayjs(),
     endDate: null,
-    key: 'selection',
+    key: 'selection'
   },
   compare: {
     startDate: new Date(),
     endDate: dayjs().add(3, 'day'),
-    key: 'compare',
-  },
+    key: 'compare'
+  }
 });
 
 <DateRangePicker

@@ -140,13 +140,12 @@ class Calendar extends PureComponent {
     const { focusedDate } = this.state;
     const { onShownDateChange, minDate, maxDate } = this.props;
     const modeMapper = {
-      monthOffset: () => focusedDate.add(value, 'month'),
-      setMonth: () => focusedDate.month(value),
-      setYear: () => focusedDate.year(value),
-      set: () => value
+      monthOffset: () => dayjs(focusedDate).add(value, 'month'),
+      setMonth: () => dayjs(focusedDate).month(value),
+      setYear: () => dayjs(focusedDate).year(value),
+      set: () => dayjs(value)
     };
-
-    const newDate = dayjs.min([dayjs.max([modeMapper[mode](), minDate]), maxDate]);
+    const newDate = dayjs.min(dayjs.max(modeMapper[mode](), dayjs(minDate)), dayjs(maxDate));
     this.focusToDate(newDate, this.props, false);
     onShownDateChange && onShownDateChange(newDate);
   };
