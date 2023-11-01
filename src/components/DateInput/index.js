@@ -19,14 +19,14 @@ class DateInput extends PureComponent {
   componentDidUpdate(prevProps) {
     const { value } = prevProps;
 
-    if (!dayjs(value).isSame(this.props.value)) {
+    if (value && !value.isSame(this.props.value)) {
       this.setState({ value: this.formatDate(this.props) });
     }
   }
 
   formatDate({ value }) {
-    if (value && dayjs(value).isValid()) {
-      return dayjs(value).format('LL');
+    if (value && dayjs.isDayjs(value)) {
+      return value.format('LL');
     }
     return '';
   }
@@ -98,13 +98,15 @@ DateInput.propTypes = {
   ariaLabel: PropTypes.string,
   className: PropTypes.string,
   onFocus: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  now: PropTypes.object,
 };
 
 DateInput.defaultProps = {
   readOnly: true,
   disabled: false,
-  dateDisplayFormat: 'MMM D, YYYY'
+  dateDisplayFormat: 'MMM D, YYYY',
+  now: dayjs(),
 };
 
 export default DateInput;

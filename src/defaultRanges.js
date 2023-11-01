@@ -1,31 +1,31 @@
 import dayjs from 'dayjs';
 
-const defineds = {
-  startOfWeek: dayjs().startOf('isoWeek'),
-  endOfWeek: dayjs().endOf('isoWeek'),
-  startOfLastWeek: dayjs()
+const defineds = (now = dayjs()) => ({
+  startOfWeek: now.startOf('isoWeek'),
+  endOfWeek: now.endOf('isoWeek'),
+  startOfLastWeek: now
     .subtract(7, 'day')
     .startOf('day'),
-  endOfLastWeek: dayjs()
+  endOfLastWeek: now
     .subtract(7, 'day')
     .endOf('isoWeek'),
-  startOfToday: dayjs().startOf('day'),
-  endOfToday: dayjs().endOf('day'),
-  startOfYesterday: dayjs()
+  startOfToday: now.startOf('day'),
+  endOfToday: now.endOf('day'),
+  startOfYesterday: now
     .subtract(1, 'day')
     .startOf('day'),
-  endOfYesterday: dayjs()
+  endOfYesterday: now
     .subtract(1, 'day')
     .endOf('day'),
-  startOfMonth: dayjs().startOf('month'),
-  endOfMonth: dayjs().endOf('month'),
-  startOfLastMonth: dayjs()
+  startOfMonth: now.startOf('month'),
+  endOfMonth: now.endOf('month'),
+  startOfLastMonth: now
     .subtract(1, 'month')
     .startOf('month'),
-  endOfLastMonth: dayjs()
+  endOfLastMonth: now
     .subtract(1, 'month')
     .endOf('month'),
-};
+});
 
 const staticRangeHandler = {
   range: {},
@@ -42,7 +42,7 @@ export function createStaticRanges(ranges) {
   return ranges.map(range => ({ ...staticRangeHandler, ...range }));
 }
 
-export const defaultStaticRanges = createStaticRanges([
+export const defaultStaticRanges = (now = dayjs()) => ((defineds) => createStaticRanges([
   {
     label: 'Today',
     range: () => ({
@@ -86,9 +86,9 @@ export const defaultStaticRanges = createStaticRanges([
       endDate: defineds.endOfLastMonth,
     }),
   },
-]);
+]))(defineds(now));
 
-export const defaultInputRanges = [
+export const defaultInputRanges = (now = dayjs()) => ((defineds) => [
   {
     label: 'days up to today',
     range(value) {
@@ -118,4 +118,4 @@ export const defaultInputRanges = [
       return dayjs(range.endDate).diff(defineds.startOfToday, 'day') + 1;
     },
   },
-];
+])(defineds(now));

@@ -9,12 +9,14 @@ import DayCell, { rangeShape } from '../DayCell';
 
 dayjs.extend(weekday);
 // eslint-disable-next-line no-unused-vars
-function renderWeekdays(styles, _dateOptions, _weekdayDisplayFormat) {
+function renderWeekdays(now, styles, _dateOptions, _weekdayDisplayFormat) {
+  const startOfWeek = now.startOf('isoWeek');
+  const endOfWeek = now.endOf('isoWeek');
   return (
     <div className={styles.weekDays}>
-      {getIntervals(dayjs().startOf('isoWeek'), dayjs().endOf('isoWeek')).map((day, i) => (
+      {getIntervals(startOfWeek, endOfWeek).map((day, i) => (
         <span className={styles.weekDay} key={i}>
-          {dayjs.weekdaysShort()[dayjs(day).weekday()]}
+          {dayjs.weekdaysShort()[day.weekday()]}
         </span>
       ))}
     </div>
@@ -23,10 +25,9 @@ function renderWeekdays(styles, _dateOptions, _weekdayDisplayFormat) {
 
 class Month extends PureComponent {
   render() {
-    const now = dayjs();
-    const { displayMode, focusedRange, drag, styles, disabledDates, disabledDay } = this.props;
-    const minDate = this.props.minDate && dayjs(this.props.minDate).startOf('day');
-    const maxDate = this.props.maxDate && dayjs(this.props.maxDate).endOf('day');
+    const { displayMode, focusedRange, drag, styles, disabledDates, disabledDay, now } = this.props;
+    const minDate = this.props.minDate?.startOf('day');
+    const maxDate = this.props.maxDate?.endOf('day');
     const monthDisplay = getMonthDisplayRange(
       this.props.month,
       this.props.dateOptions,
@@ -51,10 +52,14 @@ class Month extends PureComponent {
           <div className={styles.monthName}>{dayjs.months()[this.props.month.month()]}</div>
         ) : null}
         {this.props.showWeekDays &&
-          renderWeekdays(styles, this.props.dateOptions, this.props.weekdayDisplayFormat)}
+          renderWeekdays(
+            now,
+            styles,
+            this.props.dateOptions,
+            this.props.weekdayDisplayFormat,
+          )}
         <div className={styles.days} onMouseLeave={this.props.onMouseLeave}>
-          {getIntervals(monthDisplay.start, monthDisplay.end).map((dayNotParsed, index) => {
-            const day = dayjs(dayNotParsed);
+          {getIntervals(monthDisplay.start, monthDisplay.end).map((day, index) => {
             const isStartOfMonth = day.isSame(monthDisplay.startDateOfMonth, 'day');
             const isEndOfMonth = day.isSame(monthDisplay.endDateOfMonth, 'day');
             const isOutsideMinMax =
@@ -68,6 +73,7 @@ class Month extends PureComponent {
                 {...this.props}
                 ranges={ranges}
                 day={day}
+                now={now}
                 preview={showPreview ? this.props.preview : null}
                 isWeekend={day.isoWeekday() == 7 || day.isoWeekday() == 6}
                 isToday={day.isSame(now, 'day')}
@@ -99,7 +105,9 @@ class Month extends PureComponent {
   }
 }
 
-Month.defaultProps = {};
+Month.defaultProps = {
+  now: dayjs(),
+};
 
 Month.propTypes = {
   style: PropTypes.object,
@@ -129,6 +137,7 @@ Month.propTypes = {
   showWeekDays: PropTypes.bool,
   showMonthName: PropTypes.bool,
   fixedHeight: PropTypes.bool,
+  now: PropTypes.object,
 };
 
 export default Month;
