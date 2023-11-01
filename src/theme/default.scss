@@ -259,6 +259,25 @@
  }
 }
 
+/** If hovered day is at the right edge and is inside/start of a preview day range, remove border right radius **/
+.rdrDayEndOfMonth, .rdrDayEndOfWeek{
+  .rdrDayInPreview, .rdrDayStartPreview:not(.rdrDayEndPreview) {
+   border-top-right-radius: 0;
+   border-bottom-right-radius:  0;
+   border-right-width: 1px;
+   right: 0px;
+ }
+}
+
+/** If hovered day is at the left edge and is inside/end of a preview day range, remove border left radius **/
+.rdrDayStartOfMonth, .rdrDayStartOfWeek{
+  .rdrDayInPreview, .rdrDayEndPreview:not(.rdrDayStartPreview) {
+   border-top-left-radius:  0;
+   border-bottom-left-radius:  0;
+   border-left-width: 1px;
+   left: 0px;
+ }
+}
 
 .rdrDayStartPreview, .rdrDayInPreview, .rdrDayEndPreview{
   background: rgba(255, 255, 255, 0.09);
@@ -393,4 +412,22 @@
   font-weight: 600;
   color: #849095;
   padding: 0.833em;
+}
+
+/* Hide days not belonging to the current month */
+.rdrDayPassive {
+  visibility: hidden;
+}
+
+/* Border radius only applied to multi-day ranges edges, no radius to days in-between */
+.rdrInRange {
+  border-radius: 0 !important;
+}
+.rdrStartEdge:not(.rdrEndEdge) {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.rdrEndEdge:not(.rdrStartEdge) {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }

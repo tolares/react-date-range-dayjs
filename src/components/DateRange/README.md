@@ -11,15 +11,16 @@ This component extends all the props of **[Calendar](#calendar)** component. In 
 
 #### Example: Editable Date Inputs
 ```jsx inside Markdown
-import {useState} from 'react'
+import {useState} from 'react';
+import dayjs from 'dayjs';
+
 const [state, setState] = useState([
     {
-      startDate: new Date(),
+      startDate: dayjs(),
       endDate: null,
       key: 'selection'
     }
   ]);
-  
 <DateRange
   editableDateInputs={true}
   onChange={item => setState([item.selection])}

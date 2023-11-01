@@ -28,34 +28,38 @@ class DateRange extends Component {
       moveRangeOnFirstSelection,
       retainEndDateOnFirstSelection,
       disabledDates,
+      now,
     } = this.props;
     const focusedRangeIndex = focusedRange[0];
     const selectedRange = ranges[focusedRangeIndex];
     if (!selectedRange || !onChange) return {};
     let { startDate, endDate } = selectedRange;
-    const now = dayjs();
     let nextFocusRange;
     if (!isSingleValue) {
       startDate = value.startDate;
       endDate = value.endDate;
     } else if (focusedRange[1] === 0) {
       // startDate selection
-      const dayOffset = dayjs(endDate || now).diff(startDate, 'day');
+      const dayOffset = (endDate || now)
+        .diff(startDate, 'day');
       const calculateEndDate = () => {
         if (moveRangeOnFirstSelection) {
-          return dayjs(value).add(dayOffset, 'day');
+          return value.add(dayOffset, 'day');
         }
         if (retainEndDateOnFirstSelection) {
-          if (!endDate || dayjs(value).isBefore(dayjs(endDate), 'day')) {
-            return dayjs(endDate);
+          if (
+            !endDate ||
+            value.isBefore(endDate, 'day')
+          ) {
+            return endDate;
           }
-          return dayjs(value);
+          return value;
         }
-        return dayjs(value) || dayjs();
+        return value || now;
       };
       startDate = value;
       endDate = calculateEndDate();
-      if (maxDate) endDate = dayjs.min([dayjs(endDate), dayjs(maxDate)]);
+      if (maxDate) endDate = dayjs.min([endDate, maxDate]);
       nextFocusRange = [focusedRange[0], 1];
     } else {
       endDate = value;
@@ -122,6 +126,7 @@ class DateRange extends Component {
   render() {
     return (
       <Calendar
+        now={this.props.now}
         focusedRange={this.state.focusedRange}
         onRangeFocusChange={this.handleRangeFocusChange}
         preview={this.state.preview}
@@ -148,6 +153,7 @@ DateRange.defaultProps = {
   retainEndDateOnFirstSelection: false,
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   disabledDates: [],
+  now: dayjs(),
 };
 
 DateRange.propTypes = {
@@ -158,6 +164,7 @@ DateRange.propTypes = {
   ranges: PropTypes.arrayOf(rangeShape),
   moveRangeOnFirstSelection: PropTypes.bool,
   retainEndDateOnFirstSelection: PropTypes.bool,
+  now: PropTypes.object,
 };
 
 export default DateRange;

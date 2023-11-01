@@ -1,8 +1,7 @@
 import classnames from 'classnames';
-import dayjs from 'dayjs';
 
 export function calcFocusDate(currentFocusedDate, props) {
-  const { shownDate, date, months, ranges, focusedRange, displayMode } = props;
+  const { shownDate, date, months, ranges, focusedRange, displayMode, now } = props;
   // find primary date according the props
   let targetInterval;
   if (displayMode === 'dateRange') {
@@ -17,9 +16,9 @@ export function calcFocusDate(currentFocusedDate, props) {
       end: date,
     };
   }
-  targetInterval.start = (dayjs(targetInterval.start) || dayjs()).startOf('month');
-  targetInterval.end = (dayjs(targetInterval.end) || dayjs(targetInterval.start)).endOf('month');
-  const targetDate = targetInterval.start || targetInterval.end || shownDate || dayjs();
+  targetInterval.start = (targetInterval.start || now).startOf('month');
+  targetInterval.end = (targetInterval.end || targetInterval.start).endOf('month');
+  const targetDate = targetInterval.start || targetInterval.end || shownDate || now;
 
   // initial focus
   if (!currentFocusedDate) return shownDate || targetDate;
@@ -42,8 +41,8 @@ export function findNextRangeIndex(ranges, currentRangeIndex = -1) {
 }
 
 export function getMonthDisplayRange(date, dateOptions, fixedHeight) {
-  const startDateOfMonth = dayjs(date).startOf('month');
-  const endDateOfMonth = dayjs(date).endOf('month');
+  const startDateOfMonth = date.startOf('month');
+  const endDateOfMonth = date.endOf('month');
   const startDateOfCalendar = startDateOfMonth.startOf('isoWeek');
   let endDateOfCalendar = endDateOfMonth.endOf('isoWeek');
   if (fixedHeight && endDateOfCalendar.diff(startDateOfCalendar, 'day') <= 34) {
@@ -72,11 +71,11 @@ export function generateStyles(sources) {
 }
 
 export function getIntervals(currentDay, closeDay) {
-  var currentDate = dayjs(currentDay);
-  var closeTime = dayjs(closeDay);
+  var currentDate = currentDay;
+  var closeTime = closeDay;
   const dateRanges = [];
   while (currentDate.isBefore(closeTime, 'day') || currentDate.isSame(closeTime, 'day')) {
-    dateRanges.push(currentDate.format());
+    dateRanges.push(currentDate.clone());
     currentDate = currentDate.add(1, 'day');
   }
   return dateRanges;

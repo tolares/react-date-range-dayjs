@@ -32,7 +32,7 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState([
   {
-    startDate: new Date(),
+    startDate: dayjs(),
     endDate: dayjs().add(7, 'day'),
     key: 'selection'
   }
@@ -58,12 +58,12 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection: {
-    startDate: new Date(),
+    startDate: dayjs(),
     endDate: null,
     key: 'selection'
   },
   compare: {
-    startDate: new Date(),
+    startDate: dayjs(),
     endDate: dayjs().add(3, 'day'),
     key: 'compare'
   }
@@ -232,7 +232,7 @@ const [state, setState] = useState({
     key: 'selection'
   },
   compare: {
-    startDate: new Date(),
+    startDate: dayjs(),
     endDate: dayjs().add(3, 'day'),
     key: 'compare'
   }
@@ -246,5 +246,41 @@ const [state, setState] = useState({
   direction="vertical"
   scroll={{ enabled: true }}
   ranges={[state.selection, state.compare]}
+/>;
+```
+
+#### Example: Custom current date (now)
+
+Provide custom current date, useful when the context is related to a custom
+timezone where the current date could be the next or previous date of the actual user date.
+
+```jsx inside Markdown
+import { useState } from 'react';
+import dayjs from 'dayjs';
+
+const now = dayjs().add(40, 'day');
+
+const [state, setState] = useState({
+  selection: {
+    startDate: now,
+    endDate: null,
+    key: 'selection'
+  },
+  compare: {
+    startDate: now,
+    endDate: now.add(3, 'day'),
+    key: 'compare'
+  }
+});
+
+<DateRangePicker
+  onChange={item => setState({ ...state, ...item })}
+  months={1}
+  scroll={{ enabled: false }}
+  direction="vertical"
+  minDate={now.subtract(50, 'day')}
+  maxDate={now.add(30, 'day')}
+  ranges={[state.selection, state.compare]}
+  now={now}
 />;
 ```
