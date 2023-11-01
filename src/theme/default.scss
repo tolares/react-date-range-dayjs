@@ -394,3 +394,8 @@
   color: #849095;
   padding: 0.833em;
 }
+
+/* Hide days not belonging to the current month */
+.rdrDayPassive {
+  visibility: hidden;
+}
