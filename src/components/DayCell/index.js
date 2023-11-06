@@ -111,26 +111,31 @@ class DayCell extends Component {
       />
     );
   };
+
+  checkDayInRange= (day, range) => {
+    let startDate = range.startDate || this.props.now;
+    let endDate = range.endDate || this.props.now;
+    if (endDate?.isBefore(startDate, 'day')) {
+      [startDate, endDate] = [endDate, startDate];
+    }
+    startDate = startDate ? startDate.endOf('day') : null;
+    endDate = endDate ? endDate.startOf('day') : null;
+    const isInRange =
+      (!startDate || day.isAfter(startDate, 'day')) &&
+      (!endDate || day.isBefore(endDate, 'day'));
+    const isStartEdge = !isInRange && day.isSame(startDate, 'day');
+    const isEndEdge = !isInRange && day.isSame(endDate, 'day');
+    return {isInRange, isStartEdge, isEndEdge};
+  }
+
   renderSelectionPlaceholders = () => {
-    const { styles, ranges, day, displayMode, date, color, now } = this.props;
+    const { styles, ranges, day, displayMode, date, color } = this.props;
     if (displayMode === 'date') {
       let isSelected = day.isSame(date, 'day');
       return isSelected ? <span className={styles.selected} style={{ color }} /> : null;
     }
-
     const inRanges = ranges.reduce((result, range) => {
-      let startDate = range.startDate || now;
-      let endDate = range.endDate || now;
-      if (endDate?.isBefore(startDate, 'day')) {
-        [startDate, endDate] = [endDate, startDate];
-      }
-      startDate = startDate ? startDate.endOf('day') : null;
-      endDate = endDate ? endDate.startOf('day') : null;
-      const isInRange =
-        (!startDate || day.isAfter(startDate, 'day')) &&
-        (!endDate || day.isBefore(endDate, 'day'));
-      const isStartEdge = !isInRange && day.isSame(startDate, 'day');
-      const isEndEdge = !isInRange && day.isSame(endDate, 'day');
+      const { isInRange, isStartEdge, isEndEdge } = this.checkDayInRange(day, range);
       if (isInRange || isStartEdge || isEndEdge) {
         return [
           ...result,
@@ -158,6 +163,14 @@ class DayCell extends Component {
     ));
   };
 
+  getTextColor = () => {
+    const { ranges, day } = this.props;
+    return ranges.reduce((textColor, range) => {
+      const { isInRange, isStartEdge, isEndEdge } = this.checkDayInRange(day, range);
+      return (isInRange || isStartEdge || isEndEdge) ? range.textColor : textColor;
+    }, null);
+  }
+
   render() {
     const { dayContentRenderer } = this.props;
     return (
@@ -179,7 +192,7 @@ class DayCell extends Component {
         {this.renderSelectionPlaceholders()}
         {this.renderPreviewPlaceholder()}
         <span className={this.props.styles.dayNumber}>
-          {dayContentRenderer?.(this.props.day) || <span>{this.props.day.date()}</span>}
+          {dayContentRenderer?.(this.props.day) || <span style={{color: this.getTextColor()}}>{this.props.day.date()}</span>}
         </span>
       </button>
     );
@@ -194,6 +207,7 @@ export const rangeShape = PropTypes.shape({
   startDate: PropTypes.object,
   endDate: PropTypes.object,
   color: PropTypes.string,
+  textColor: PropTypes.string,
   key: PropTypes.string,
   autoFocus: PropTypes.bool,
   disabled: PropTypes.bool,
