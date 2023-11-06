@@ -1,6 +1,6 @@
 {
   "name": "react-date-range-dayjs",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "A React component for choosing dates and date ranges based on react-date-range but using Dayjs as date manager.",
   "main": "dist/index.js",
   "scripts": {
@@ -22,7 +22,8 @@
     "dayjs"
   ],
   "contributors": [
-    "Henry Lagarde (https://github.com/tolares)"
+    "Henry Lagarde (https://github.com/tolares)",
+    "Daniel Flores (https://github.com/devniel)"
   ],
   "license": "MIT",
   "repository": {
