@@ -322,3 +322,41 @@ const [state, setState] = useState({
   now={now}
 />;
 ```
+
+#### Example: Read-Only
+
+Disable any effect of hovering or clicking over the Calendar.
+
+```jsx inside Markdown
+import { useState } from 'react';
+import dayjs from 'dayjs';
+
+const now = dayjs().add(40, 'day');
+
+const [state, setState] = useState({
+  selection: {
+    startDate: now,
+    endDate: now.add(3, 'day'),
+    key: 'selection',
+  },
+  compare: {
+    startDate: now.subtract(1, 'week'),
+    endDate: now.add(3, 'day').subtract(1, 'week'),
+    key: 'compare',
+    textColor: 'black',
+    color: '#EEE'
+  }
+});
+
+<DateRangePicker
+  onChange={item => setState({ ...state, ...item })}
+  months={1}
+  scroll={{ enabled: false }}
+  direction="vertical"
+  minDate={now.subtract(50, 'day')}
+  maxDate={now.add(30, 'day')}
+  ranges={[state.selection, state.compare]}
+  now={now}
+  readOnly
+/>;
+```

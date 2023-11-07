@@ -154,6 +154,7 @@ DateRange.defaultProps = {
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   disabledDates: [],
   now: dayjs(),
+  readOnly: false,
 };
 
 DateRange.propTypes = {
@@ -165,6 +166,7 @@ DateRange.propTypes = {
   moveRangeOnFirstSelection: PropTypes.bool,
   retainEndDateOnFirstSelection: PropTypes.bool,
   now: PropTypes.object,
+  readOnly: PropTypes.bool,
 };
 
 export default DateRange;

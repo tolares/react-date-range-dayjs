@@ -39,10 +39,9 @@ class DateInput extends PureComponent {
     }
 
     const { onChange, dateDisplayFormat = 'L' } = this.props;
-    const parsed = dayjs(value).format(dateDisplayFormat);
 
-    if (parsed.isValid()) {
-      this.setState({ changed: false }, () => onChange(parsed));
+    if (dayjs(value).isValid()) {
+      this.setState({ changed: false }, () => onChange(dayjs(value, dateDisplayFormat)));
     } else {
       this.setState({ invalid: true });
     }
@@ -66,14 +65,13 @@ class DateInput extends PureComponent {
   };
 
   render() {
-    value;
     const { className, readOnly, placeholder, ariaLabel, disabled, onFocus } = this.props;
     const { value, invalid } = this.state;
     return (
-      <span className={classnames('rdrDateInput', className)}>
+      <span className={classnames('rdrDateInput', readOnly ? 'rdrDateInputReadOnly' : null, className)}>
         <input
           readOnly={readOnly}
-          disabled={disabled}
+          disabled={disabled || readOnly}
           value={value}
           placeholder={placeholder}
           aria-label={ariaLabel}

@@ -17,6 +17,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       style={
         Object {
           "color": null,
+          "cursor": "pointer",
         }
       }
       type="button"
@@ -42,6 +43,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       style={
         Object {
           "color": null,
+          "cursor": "pointer",
         }
       }
       type="button"
@@ -63,6 +65,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       style={
         Object {
           "color": null,
+          "cursor": "pointer",
         }
       }
       type="button"
@@ -86,6 +89,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       style={
         Object {
           "color": null,
+          "cursor": "pointer",
         }
       }
       type="button"
@@ -131,6 +135,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "dayInPreview": "rdrDayInPreview",
           "dayNumber": "rdrDayNumber",
           "dayPassive": "rdrDayPassive",
+          "dayReadOnly": "rdrDayReadOnly",
           "daySelected": "rdrDaySelected",
           "dayStartOfMonth": "rdrDayStartOfMonth",
           "dayStartOfWeek": "rdrDayStartOfWeek",
@@ -195,6 +200,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "dayInPreview": "rdrDayInPreview",
           "dayNumber": "rdrDayNumber",
           "dayPassive": "rdrDayPassive",
+          "dayReadOnly": "rdrDayReadOnly",
           "daySelected": "rdrDaySelected",
           "dayStartOfMonth": "rdrDayStartOfMonth",
           "dayStartOfWeek": "rdrDayStartOfWeek",

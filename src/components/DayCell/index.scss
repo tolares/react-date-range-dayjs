@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.rdrDayReadOnly {
+  cursor: default;
+}
+
 .rdrDayNumber {
   display: block;
   position: relative;

@@ -17,7 +17,8 @@ class DefinedRange extends Component {
   }
 
   handleRangeChange = range => {
-    const { onChange, ranges, focusedRange } = this.props;
+    const { onChange, ranges, focusedRange, readOnly } = this.props;
+    if (readOnly) return;
     const selectedRange = ranges[focusedRange[0]];
     if (!onChange || !selectedRange) return;
     onChange({
@@ -56,6 +57,7 @@ class DefinedRange extends Component {
       renderStaticRangeLabel,
       rangeColors,
       className,
+      readOnly,
     } = this.props;
 
     return (
@@ -82,6 +84,7 @@ class DefinedRange extends Component {
                   color: selectedRange
                     ? selectedRange.color || rangeColors[focusedRangeIndex]
                     : null,
+                  cursor: readOnly ? 'default' : 'pointer',
                 }}
                 key={i}
                 onClick={() => this.handleRangeChange(staticRange.range(this.props))}
@@ -99,7 +102,7 @@ class DefinedRange extends Component {
             );
           })}
         </div>
-        <div className={styles.inputRanges}>
+        {!readOnly && <div className={styles.inputRanges}>
           {inputRanges.map((rangeOption, i) => (
             <InputRangeField
               key={i}
@@ -111,7 +114,7 @@ class DefinedRange extends Component {
               value={this.getRangeOptionValue(rangeOption)}
             />
           ))}
-        </div>
+        </div>}
         {footerContent}
       </div>
     );
@@ -131,6 +134,7 @@ DefinedRange.propTypes = {
   className: PropTypes.string,
   renderStaticRangeLabel: PropTypes.func,
   now: PropTypes.object,
+  readOnly: PropTypes.bool,
 };
 
 DefinedRange.defaultProps = {
@@ -139,6 +143,7 @@ DefinedRange.defaultProps = {
   ranges: [],
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   focusedRange: [0, 0],
+  readOnly: false,
 };
 
 export default DefinedRange;
