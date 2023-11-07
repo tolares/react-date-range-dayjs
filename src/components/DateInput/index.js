@@ -39,10 +39,9 @@ class DateInput extends PureComponent {
     }
 
     const { onChange, dateDisplayFormat = 'L' } = this.props;
-    const parsed = dayjs(value).format(dateDisplayFormat);
 
-    if (parsed.isValid()) {
-      this.setState({ changed: false }, () => onChange(parsed));
+    if (dayjs(value).isValid()) {
+      this.setState({ changed: false }, () => onChange(dayjs(value, dateDisplayFormat)));
     } else {
       this.setState({ invalid: true });
     }
