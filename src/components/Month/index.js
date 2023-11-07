@@ -107,6 +107,7 @@ class Month extends PureComponent {
 
 Month.defaultProps = {
   now: dayjs(),
+  readOnly: false,
 };
 
 Month.propTypes = {
@@ -138,6 +139,7 @@ Month.propTypes = {
   showMonthName: PropTypes.bool,
   fixedHeight: PropTypes.bool,
   now: PropTypes.object,
+  readOnly: PropTypes.bool,
 };
 
 export default Month;

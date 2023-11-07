@@ -393,7 +393,8 @@ class Calendar extends PureComponent {
       color,
       navigatorRenderer,
       className,
-      preview
+      preview,
+      readOnly
     } = this.props;
     const { scrollArea, focusedDate } = this.state;
     const isVertical = direction === 'vertical';
@@ -406,8 +407,12 @@ class Calendar extends PureComponent {
     return (
       <div
         className={classnames(this.styles.calendarWrapper, className)}
-        onMouseUp={() => this.setState({ drag: { status: false, range: {} } })}
+        onMouseUp={() => {
+          if(readOnly) return;
+          this.setState({ drag: { status: false, range: {} } })}
+        }
         onMouseLeave={() => {
+          if(readOnly) return;
           this.setState({ drag: { status: false, range: {} } });
         }}
       >
@@ -421,7 +426,7 @@ class Calendar extends PureComponent {
                 this.styles.infiniteMonths,
                 isVertical ? this.styles.monthsVertical : this.styles.monthsHorizontal
               )}
-              onMouseLeave={() => onPreviewChange && onPreviewChange()}
+              onMouseLeave={() => onPreviewChange && !readOnly && onPreviewChange()}
               style={{
                 width: scrollArea.calendarWidth + 11,
                 height: scrollArea.calendarHeight + 11
@@ -544,7 +549,8 @@ Calendar.defaultProps = {
   calendarFocus: 'forwards',
   preventSnapRefocus: false,
   ariaLabels: {},
-  now: dayjs()
+  now: dayjs(),
+  readOnly: false,
 };
 
 Calendar.propTypes = {
@@ -601,7 +607,8 @@ Calendar.propTypes = {
   calendarFocus: PropTypes.string,
   preventSnapRefocus: PropTypes.bool,
   ariaLabels: ariaLabelsShape,
-  now: PropTypes.object
+  now: PropTypes.object,
+  readOnly: PropTypes.bool,
 };
 
 export default Calendar;

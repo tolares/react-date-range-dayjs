@@ -21,15 +21,17 @@ class DayCell extends Component {
   }
 
   handleKeyEvent = event => {
-    const { day, onMouseDown, onMouseUp } = this.props;
+    const { day, onMouseDown, onMouseUp, readOnly } = this.props;
+    if (readOnly) return;
     if ([13 /* space */, 32 /* enter */].includes(event.keyCode)) {
       if (event.type === 'keydown') onMouseDown(day);
       else onMouseUp(day);
     }
   };
   handleMouseEvent = event => {
-    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp } = this.props;
+    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly } = this.props;
     const stateChanges = {};
+    if (readOnly) return;
     if (disabled) {
       onPreviewChange();
       return;
@@ -85,6 +87,7 @@ class DayCell extends Component {
       [styles.dayEndOfMonth]: isEndOfMonth,
       [styles.dayHovered]: this.state.hover,
       [styles.dayActive]: this.state.active,
+      [styles.dayReadOnly]: this.props.readOnly,
     });
   };
   renderPreviewPlaceholder = () => {
@@ -212,6 +215,7 @@ export const rangeShape = PropTypes.shape({
   autoFocus: PropTypes.bool,
   disabled: PropTypes.bool,
   showDateDisplay: PropTypes.bool,
+  readOnly: false,
 });
 
 DayCell.propTypes = {
@@ -241,7 +245,8 @@ DayCell.propTypes = {
   onMouseUp: PropTypes.func,
   onMouseEnter: PropTypes.func,
   dayContentRenderer: PropTypes.func,
-  now: PropTypes.object
+  now: PropTypes.object,
+  readOnly: PropTypes.bool,
 };
 
 export default DayCell;
