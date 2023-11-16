@@ -1,9 +1,18 @@
+import 'dayjs/locale/de';
+import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/it';
+import 'dayjs/locale/ja';
+import 'dayjs/locale/nl';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/ru';
 import { shallowEqualObjects } from 'shallow-equal';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import minMax from 'dayjs/plugin/minMax';
+import updateLocale from 'dayjs/plugin/updateLocale';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactList from 'react-list';
@@ -18,12 +27,20 @@ import Month from '../Month';
 dayjs.extend(localeData);
 dayjs.extend(minMax);
 dayjs.extend(localizedFormat);
+dayjs.extend(updateLocale);
 
 class Calendar extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this.dateOptions = { locale: props.locale };
     if (props.weekStartsOn !== undefined) this.dateOptions.weekStartsOn = props.weekStartsOn;
+    if (this.dateOptions.weekStartsOn != null) {
+      dayjs.updateLocale(this.dateOptions.locale, {
+        weekStart: this.dateOptions.weekStartsOn,
+      });
+      this.props.now.$locale().weekStart = this.dateOptions.weekStartsOn;
+    }
+    dayjs.locale(this.dateOptions.locale);
     this.styles = generateStyles([coreStyles, props.classNames]);
     this.listSizeCache = {};
     this.isFirstRender = true;
@@ -126,6 +143,13 @@ class Calendar extends PureComponent {
     if (prevProps.locale !== this.props.locale || prevProps.weekStartsOn !== this.props.weekStartsOn) {
       this.dateOptions = { locale: this.props.locale };
       if (this.props.weekStartsOn !== undefined) this.dateOptions.weekStartsOn = this.props.weekStartsOn;
+      if (this.dateOptions.weekStartsOn != null) {
+        dayjs.updateLocale(this.dateOptions.locale, {
+          weekStart: this.dateOptions.weekStartsOn,
+        });
+       this.props.now.$locale().weekStart = this.dateOptions.weekStartsOn;
+      }
+      dayjs.locale(this.dateOptions.locale);
       this.setState({
         monthNames: this.getMonthNames()
       });
@@ -240,14 +264,14 @@ class Calendar extends PureComponent {
     );
   };
   renderWeekdays() {
-    let currentDate = this.props.now.startOf('isoWeek');
-    const closeTime = this.props.now.endOf('isoWeek');
+    let currentDate = this.props.now.startOf('week');
+    const closeTime = this.props.now.endOf('week');
     const dateRanges = getIntervals(currentDate, closeTime);
     return (
       <div className={this.styles.weekDays}>
         {dateRanges.map((day, i) => (
           <span className={this.styles.weekDay} key={i}>
-            { dayjs.weekdaysShort()[day.weekday()] }
+            {dayjs.weekdaysShort()[day.day()]}
           </span>
         ))}
       </div>
@@ -394,7 +418,6 @@ class Calendar extends PureComponent {
       navigatorRenderer,
       className,
       preview,
-      readOnly
     } = this.props;
     const { scrollArea, focusedDate } = this.state;
     const isVertical = direction === 'vertical';

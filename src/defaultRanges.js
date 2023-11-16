@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 const defineds = (now = dayjs()) => ({
-  startOfWeek: now.startOf('isoWeek'),
-  endOfWeek: now.endOf('isoWeek'),
+  startOfWeek: now.startOf('week'),
+  endOfWeek: now.endOf('week'),
   startOfLastWeek: now
     .subtract(7, 'day')
     .startOf('day'),
   endOfLastWeek: now
     .subtract(7, 'day')
-    .endOf('isoWeek'),
+    .endOf('week'),
   startOfToday: now.startOf('day'),
   endOfToday: now.endOf('day'),
   startOfYesterday: now

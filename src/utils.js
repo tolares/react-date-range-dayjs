@@ -43,8 +43,8 @@ export function findNextRangeIndex(ranges, currentRangeIndex = -1) {
 export function getMonthDisplayRange(date, dateOptions, fixedHeight) {
   const startDateOfMonth = date.startOf('month');
   const endDateOfMonth = date.endOf('month');
-  const startDateOfCalendar = startDateOfMonth.startOf('isoWeek');
-  let endDateOfCalendar = endDateOfMonth.endOf('isoWeek');
+  const startDateOfCalendar = startDateOfMonth.startOf('week');
+  let endDateOfCalendar = endDateOfMonth.endOf('week');
   if (fixedHeight && endDateOfCalendar.diff(startDateOfCalendar, 'day') <= 34) {
     endDateOfCalendar = endDateOfCalendar.add(7, 'day');
   }
