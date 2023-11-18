@@ -404,6 +404,7 @@ class Calendar extends PureComponent {
       navigatorRenderer,
       className,
       preview,
+      readOnly,
     } = this.props;
     const { scrollArea, focusedDate } = this.state;
     const isVertical = direction === 'vertical';

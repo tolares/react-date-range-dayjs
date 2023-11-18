@@ -25,7 +25,6 @@ class DayCell extends Component {
   handleMouseEvent = event => {
     const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly } = this.props;
     const stateChanges = {};
-    if (readOnly) return;
     if (disabled) {
       onPreviewChange();
       return;
@@ -33,6 +32,7 @@ class DayCell extends Component {
 
     switch (event.type) {
       case 'mouseenter':
+        if (readOnly) break;
         onMouseEnter(day);
         onPreviewChange(day);
         stateChanges.hover = true;
@@ -42,16 +42,17 @@ class DayCell extends Component {
         stateChanges.hover = false;
         break;
       case 'mousedown':
+        if (readOnly) break;
         stateChanges.active = true;
         onMouseDown(day);
         break;
       case 'mouseup':
         event.stopPropagation();
         stateChanges.active = false;
-        onMouseUp(day);
+        !readOnly && onMouseUp(day);
         break;
       case 'focus':
-        onPreviewChange(day);
+        !readOnly && onPreviewChange(day);
         break;
     }
     if (Object.keys(stateChanges).length) {
