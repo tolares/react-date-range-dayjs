@@ -1,15 +1,9 @@
 /* eslint-disable no-fallthrough */
-import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import weekday from 'dayjs/plugin/weekday';
-import updateLocale from 'dayjs/plugin/updateLocale';
-
 import { getMonthDisplayRange, getIntervals } from '../../utils';
 import DayCell, { rangeShape } from '../DayCell';
-
-dayjs.extend(weekday);
-dayjs.extend(updateLocale);
+import dayjs from '../../timeEngine';
 
 function renderWeekdays(now, styles) {
   const startOfWeek = now.startOf('week');
@@ -78,7 +72,7 @@ class Month extends PureComponent {
                 day={day}
                 now={now}
                 preview={showPreview ? this.props.preview : null}
-                isWeekend={day.weekday() == 7 || day.weekday() == 6}
+                isWeekend={day.day() == 0 || day.day() == 6}
                 isToday={day.isSame(now, 'day')}
                 isStartOfWeek={day.isSame(day.startOf('week'), 'day')}
                 isEndOfWeek={day.isSame(day.endOf('week'), 'day')}

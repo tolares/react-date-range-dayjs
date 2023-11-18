@@ -1,18 +1,16 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isBetween from 'dayjs/plugin/isBetween';
-import { findNextRangeIndex, generateStyles } from '../../utils';
+import { checkProps, findNextRangeIndex, generateStyles } from '../../utils';
 import { rangeShape } from '../DayCell';
 import Calendar from '../Calendar';
 import coreStyles from '../../styles';
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isBetween);
+import dayjs from '../../timeEngine';
+
 class DateRange extends Component {
   constructor(props, context) {
     super(props, context);
+    checkProps(props, 'DateRange');
     this.state = {
       focusedRange: props.initialFocusedRange || [findNextRangeIndex(props.ranges), 0],
       preview: null,
@@ -153,7 +151,7 @@ DateRange.defaultProps = {
   retainEndDateOnFirstSelection: false,
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   disabledDates: [],
-  now: dayjs(),
+  now: dayjs().utc(true),
   readOnly: false,
 };
 

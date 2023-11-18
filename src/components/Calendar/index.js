@@ -1,37 +1,23 @@
-import 'dayjs/locale/de';
-import 'dayjs/locale/es';
-import 'dayjs/locale/fr';
-import 'dayjs/locale/it';
-import 'dayjs/locale/ja';
-import 'dayjs/locale/nl';
-import 'dayjs/locale/pt';
-import 'dayjs/locale/ru';
+
 import { shallowEqualObjects } from 'shallow-equal';
 import classnames from 'classnames';
-import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import minMax from 'dayjs/plugin/minMax';
-import updateLocale from 'dayjs/plugin/updateLocale';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactList from 'react-list';
 
+import dayjs from './../../timeEngine';
 import { ariaLabelsShape } from '../../accessibility';
-import { calcFocusDate, generateStyles, getMonthDisplayRange, getIntervals } from '../../utils';
+import { calcFocusDate, generateStyles, getMonthDisplayRange, getIntervals, checkProps } from '../../utils';
 import { rangeShape } from '../DayCell';
 import coreStyles from '../../styles';
 import DateInput from '../DateInput';
 import Month from '../Month';
 
-dayjs.extend(localeData);
-dayjs.extend(minMax);
-dayjs.extend(localizedFormat);
-dayjs.extend(updateLocale);
 
 class Calendar extends PureComponent {
   constructor(props, context) {
     super(props, context);
+    checkProps(props, 'Calendar')
     this.dateOptions = { locale: props.locale };
     if (props.weekStartsOn !== undefined) this.dateOptions.weekStartsOn = props.weekStartsOn;
     if (this.dateOptions.weekStartsOn != null) {
@@ -561,8 +547,8 @@ Calendar.defaultProps = {
     enabled: false
   },
   direction: 'vertical',
-  maxDate: dayjs().add(20, 'year'),
-  minDate: dayjs().subtract(100, 'year'),
+  maxDate: dayjs().utc(true).add(20, 'year'),
+  minDate: dayjs().utc(true).subtract(100, 'year'),
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   startDatePlaceholder: 'Early',
   endDatePlaceholder: 'Continuous',
@@ -572,7 +558,7 @@ Calendar.defaultProps = {
   calendarFocus: 'forwards',
   preventSnapRefocus: false,
   ariaLabels: {},
-  now: dayjs(),
+  now: dayjs().utc(true),
   readOnly: false,
 };
 

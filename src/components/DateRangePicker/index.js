@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DateRange from '../DateRange';
 import DefinedRange from '../DefinedRange';
-import { findNextRangeIndex, generateStyles } from '../../utils';
+import { checkProps, findNextRangeIndex, generateStyles } from '../../utils';
 import classnames from 'classnames';
 import coreStyles from '../../styles';
-import dayjs from 'dayjs';
 import { defaultInputRanges, defaultStaticRanges } from '../../defaultRanges';
+import dayjs from '../../timeEngine';
 
 class DateRangePicker extends Component {
   constructor(props) {
     super(props);
+    checkProps(props.ranges, 'DateRangePicker');
     this.state = {
       focusedRange: [findNextRangeIndex(props.ranges), 0],
     };
@@ -18,12 +19,6 @@ class DateRangePicker extends Component {
   }
   render() {
     const { focusedRange } = this.state;
-    // All calendar calculations are based on the current date aka `now`. However, operations with dayjs() objects
-    // with timezone properties are costly and slow, visible when interacting with the UI; one hack is to do the
-    // conversion, remove the timezone and convert it back to a simple dayjs object. Here, we are removing the timezone
-    // data in case it's provided.
-    // Possible cause: https://github.com/iamkun/dayjs/issues/1236
-    const now = dayjs((this.props.now || dayjs()).format('YYYY-MM-DD'));
     return (
       <div className={classnames(this.styles.dateRangePickerWrapper, this.props.className)}>
         {<DefinedRange
@@ -36,9 +31,8 @@ class DateRangePicker extends Component {
           {...this.props}
           range={this.props.ranges[focusedRange[0]]}
           className={undefined}
-          now={now}
-          inputRanges={defaultInputRanges(now)}
-          staticRanges={defaultStaticRanges(now)}
+          inputRanges={defaultInputRanges(this.props.now)}
+          staticRanges={defaultStaticRanges(this.props.now)}
         />}
         <DateRange
           onRangeFocusChange={focusedRange => this.setState({ focusedRange })}
@@ -46,7 +40,6 @@ class DateRangePicker extends Component {
           {...this.props}
           ref={t => (this.dateRange = t)}
           className={undefined}
-          now={now}
         />
       </div>
     );
@@ -54,7 +47,9 @@ class DateRangePicker extends Component {
 }
 
 DateRangePicker.defaultProps = {
-  now: dayjs(),
+  now: dayjs().utc(true),
+  maxDate: dayjs().utc(true).add(20, 'year'),
+  minDate: dayjs().utc(true).subtract(100, 'year'),
 };
 
 DateRangePicker.propTypes = {

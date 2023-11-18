@@ -1,15 +1,9 @@
 /* eslint-disable no-fallthrough */
 import classnames from 'classnames';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import dayjs from '../../timeEngine';
 
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isSameOrAfter);
-dayjs.extend(isoWeek);
 class DayCell extends Component {
   constructor(props, context) {
     super(props, context);

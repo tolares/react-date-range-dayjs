@@ -7,20 +7,19 @@ dayjs.extend(utc);
 
 const [state, setState] = useState([
     {
-      startDate: dayjs(),
-      endDate:  dayjs(),
+      startDate: dayjs().utc(true),
+      endDate:  dayjs().utc(true),
       color: '#000',
       textColor: 'red'
     }
   ]);
 
 <Calendar
-  readOnly
   showDateDisplay={false}
   displayMode="dateRange"
   onChange={item => {}}
   ranges={state}
-  maxDate={dayjs()}
+  maxDate={dayjs().utc(true)}
   weekStartsOn={0}
   locale="fr"
 />

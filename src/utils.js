@@ -80,3 +80,17 @@ export function getIntervals(currentDay, closeDay) {
   }
   return dateRanges;
 }
+
+export function checkRanges(ranges, component) {
+  ranges.forEach((range) => {
+    if(range.startDate && !range.startDate.isUTC()) throw new Error('Invalid range `startDate` UTC dayjs object at ' + component);
+    if(range.endDate && !range.endDate.isUTC()) throw new Error('Invalid range `endDate` UTC dayjs object at' + component);
+  });
+}
+
+export function checkProps(props, component) {
+  if(props.now && !props.now.isUTC()) throw new Error('Invalid `now` UTC dayjs object at' + component);
+  if(props.maxDate && !props.maxDate.isUTC()) throw new Error('Invalid `maxDate` UTC dayjs object at ' + component);
+  if(props.minDate && !props.minDate.isUTC()) throw new Error('Invalid `minDate` UTC dayjs object at ' + component);
+  if(props.ranges) checkRanges(props.ranges, component);
+}

@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
+import dayjs from './timeEngine';
 
-const defineds = (now = dayjs()) => ({
+const defineds = (now = dayjs().utc(true)) => ({
   startOfWeek: now.startOf('week'),
   endOfWeek: now.endOf('week'),
   startOfLastWeek: now
@@ -42,7 +42,7 @@ export function createStaticRanges(ranges) {
   return ranges.map(range => ({ ...staticRangeHandler, ...range }));
 }
 
-export const defaultStaticRanges = (now = dayjs()) => ((defineds) => createStaticRanges([
+export const defaultStaticRanges = (now = dayjs().utc(true)) => ((defineds) => createStaticRanges([
   {
     label: 'Today',
     range: () => ({
@@ -88,7 +88,7 @@ export const defaultStaticRanges = (now = dayjs()) => ((defineds) => createStati
   },
 ]))(defineds(now));
 
-export const defaultInputRanges = (now = dayjs()) => ((defineds) => [
+export const defaultInputRanges = (now = dayjs().utc(true)) => ((defineds) => [
   {
     label: 'days up to today',
     range(value) {
@@ -106,7 +106,7 @@ export const defaultInputRanges = (now = dayjs()) => ((defineds) => [
   {
     label: 'days starting today',
     range(value) {
-      const today = dayjs();
+      const today = dayjs().utc(true);
       return {
         startDate: today,
         endDate: today.add(Math.max(Number(value), 1) - 1, 'day'),

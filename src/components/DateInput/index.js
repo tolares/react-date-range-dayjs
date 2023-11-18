@@ -1,10 +1,8 @@
 import classnames from 'classnames';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import dayjs from '../../timeEngine';
 
-dayjs.extend(localizedFormat);
 class DateInput extends PureComponent {
   constructor(props, context) {
     super(props, context);
