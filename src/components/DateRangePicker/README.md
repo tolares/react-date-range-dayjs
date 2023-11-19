@@ -72,7 +72,6 @@ const [state, setState] = useState({
 
 <DateRangePicker
   onChange={item => {
-    console.log('item:', item);
     setState({ ...state, ...item })
   }}
   minDate={dayjs().utc(true).subtract(20, 'day')}

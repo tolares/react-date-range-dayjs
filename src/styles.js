@@ -50,5 +50,5 @@ export default {
   infiniteMonths: 'rdrInfiniteMonths',
   monthsVertical: 'rdrMonthsVertical',
   monthsHorizontal: 'rdrMonthsHorizontal',
-  calendarWrapperDragging: 'rdrCalendarWrapper--dragging',
+  calendarWrapperSelecting: 'rdrCalendarWrapper--selecting',
 };

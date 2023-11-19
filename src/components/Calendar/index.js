@@ -330,18 +330,16 @@ class Calendar extends PureComponent {
   };
   onDragSelectionStart = date => {
     const { onChange, dragSelectionEnabled } = this.props;
+    if(!dragSelectionEnabled) return onChange && onChange(date);
 
-    if (dragSelectionEnabled) {
-      this.setState({
-        drag: {
-          status: true,
-          range: { startDate: date, endDate: date },
-          disablePreview: true
-        }
-      });
-    } else {
-      onChange && onChange(date);
-    }
+    this.setState({
+      drag: {
+        status: true,
+        range: { startDate: date, endDate: date },
+        disablePreview: true
+      },
+      selecting: true,
+    });
   };
 
   onDragSelectionEnd = date => {
@@ -350,17 +348,24 @@ class Calendar extends PureComponent {
     if (!dragSelectionEnabled) return;
 
     if (displayMode === 'date' || !this.state.drag.status) {
-      onChange && onChange(date);
+      if (this.props.focusedRange[1] === 1) {
+        this.setState({
+          selecting: false
+        }, () => onChange && onChange(date));
+      } else {
+        onChange && onChange(date);
+      }
       return;
     }
     const newRange = {
       startDate: this.state.drag.range.startDate,
       endDate: date
     };
+
     if (displayMode !== 'dateRange' || newRange.startDate.isSame(date, 'day')) {
-      this.setState({ drag: { status: false, range: {} } }, () => onChange && onChange(date));
+      this.setState({ drag: { status: false, range: {} }, selecting: true }, () => onChange && onChange(date));
     } else {
-      this.setState({ drag: { status: false, range: {} } }, () => {
+      this.setState({ drag: { status: false, range: {} }, selecting: false }, () => {
         updateRange && updateRange(newRange);
       });
     }
@@ -419,7 +424,7 @@ class Calendar extends PureComponent {
       <div
         className={classnames(this.styles.calendarWrapper, className,
           {
-            [styles.calendarWrapperDragging]: this.state.drag
+            [styles.calendarWrapperSelecting]: this.state.selecting
           })}
         onMouseUp={() => {
           if(readOnly) return;
@@ -459,6 +464,7 @@ class Calendar extends PureComponent {
                   return (
                     <Month
                       {...this.props}
+                      selecting={this.state.selecting}
                       onPreviewChange={onPreviewChange || this.updatePreview}
                       preview={preview || this.state.preview}
                       ranges={ranges}
@@ -504,6 +510,7 @@ class Calendar extends PureComponent {
               return (
                 <Month
                   {...this.props}
+                  selecting={this.state.selecting}
                   onPreviewChange={onPreviewChange || this.updatePreview}
                   preview={preview || this.state.preview}
                   ranges={ranges}

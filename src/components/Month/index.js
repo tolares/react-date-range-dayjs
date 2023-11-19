@@ -93,6 +93,7 @@ class Month extends PureComponent {
                 onMouseEnter={this.props.onDragSelectionMove}
                 dragRange={drag.range}
                 drag={drag.status}
+                selecting={this.props.selecting}
               />
             );
           })}
@@ -105,6 +106,7 @@ class Month extends PureComponent {
 Month.defaultProps = {
   now: dayjs(),
   readOnly: false,
+  selecting: false,
 };
 
 Month.propTypes = {
@@ -137,6 +139,7 @@ Month.propTypes = {
   fixedHeight: PropTypes.bool,
   now: PropTypes.object,
   readOnly: PropTypes.bool,
+  selecting: PropTypes.bool,
 };
 
 export default Month;

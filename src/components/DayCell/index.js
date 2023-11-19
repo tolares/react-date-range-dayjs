@@ -7,10 +7,7 @@ import dayjs from '../../timeEngine';
 class DayCell extends Component {
   constructor(props, context) {
     super(props, context);
-
-    this.state = {
-      active: false,
-    };
+    this.active = React.createRef(false);
   }
 
   handleKeyEvent = event => {
@@ -22,8 +19,7 @@ class DayCell extends Component {
     }
   };
   handleMouseEvent = event => {
-    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly } = this.props;
-    const stateChanges = {};
+    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly, selecting } = this.props;
     if (disabled) {
       onPreviewChange();
       return;
@@ -37,20 +33,17 @@ class DayCell extends Component {
         break;
       case 'mousedown':
         if (readOnly) break;
-        stateChanges.active = true;
-        onMouseDown(day);
+        this.active.current = true;
+        !selecting && onMouseDown(day);
         break;
       case 'mouseup':
         event.stopPropagation();
-        stateChanges.active = false;
+        this.active.current = false;
         !readOnly && onMouseUp(day);
         break;
       case 'focus':
         !readOnly && onPreviewChange(day);
         break;
-    }
-    if (Object.keys(stateChanges).length) {
-      this.setState(stateChanges);
     }
   };
   getClassNames = () => {
@@ -74,7 +67,7 @@ class DayCell extends Component {
       [styles.dayEndOfWeek]: isEndOfWeek,
       [styles.dayStartOfMonth]: isStartOfMonth,
       [styles.dayEndOfMonth]: isEndOfMonth,
-      [styles.dayActive]: this.state.active,
+      [styles.dayActive]: this.active.current,
       [styles.dayReadOnly]: this.props.readOnly,
     });
   };
@@ -191,7 +184,8 @@ class DayCell extends Component {
 }
 
 DayCell.defaultProps = {
-  now: dayjs(),
+  now: dayjs().utc(true),
+  selecting: false,
 };
 
 export const rangeShape = PropTypes.shape({
@@ -234,6 +228,7 @@ DayCell.propTypes = {
   dayContentRenderer: PropTypes.func,
   now: PropTypes.object,
   readOnly: PropTypes.bool,
+  selecting: PropTypes.bool,
 };
 
 export default DayCell;

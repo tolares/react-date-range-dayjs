@@ -10,7 +10,7 @@
   cursor: default;
 }
 
-.rdrCalendarWrapper:not(.rdrCalendarWrapper--dragging) .rdrDay {
+.rdrCalendarWrapper:not(.rdrCalendarWrapper--selecting) .rdrDay {
   &:not(.rdrDayDisabled):hover .rdrDayNumber:after{
     content: '';
     border: 1px solid currentColor;
