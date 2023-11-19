@@ -9,7 +9,6 @@ class DayCell extends Component {
     super(props, context);
 
     this.state = {
-      hover: false,
       active: false,
     };
   }
@@ -35,11 +34,6 @@ class DayCell extends Component {
         if (readOnly) break;
         onMouseEnter(day);
         onPreviewChange(day);
-        stateChanges.hover = true;
-        break;
-      case 'blur':
-      case 'mouseleave':
-        stateChanges.hover = false;
         break;
       case 'mousedown':
         if (readOnly) break;
@@ -80,7 +74,6 @@ class DayCell extends Component {
       [styles.dayEndOfWeek]: isEndOfWeek,
       [styles.dayStartOfMonth]: isStartOfMonth,
       [styles.dayEndOfMonth]: isEndOfMonth,
-      [styles.dayHovered]: this.state.hover,
       [styles.dayActive]: this.state.active,
       [styles.dayReadOnly]: this.props.readOnly,
     });

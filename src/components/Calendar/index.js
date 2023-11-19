@@ -12,6 +12,7 @@ import { rangeShape } from '../DayCell';
 import coreStyles from '../../styles';
 import DateInput from '../DateInput';
 import Month from '../Month';
+import styles from '../../styles';
 
 
 class Calendar extends PureComponent {
@@ -416,7 +417,10 @@ class Calendar extends PureComponent {
     }));
     return (
       <div
-        className={classnames(this.styles.calendarWrapper, className)}
+        className={classnames(this.styles.calendarWrapper, className,
+          {
+            [styles.calendarWrapperDragging]: this.state.drag
+          })}
         onMouseUp={() => {
           if(readOnly) return;
           this.setState({ drag: { status: false, range: {} } })}
