@@ -138,8 +138,8 @@ DefinedRange.propTypes = {
 };
 
 DefinedRange.defaultProps = {
-  inputRanges: defaultInputRanges(dayjs()),
-  staticRanges: defaultStaticRanges(dayjs()),
+  inputRanges: defaultInputRanges(dayjs().utc(true)),
+  staticRanges: defaultStaticRanges(dayjs().utc(true)),
   ranges: [],
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   focusedRange: [0, 0],

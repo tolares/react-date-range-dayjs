@@ -102,7 +102,7 @@ DateInput.defaultProps = {
   readOnly: true,
   disabled: false,
   dateDisplayFormat: 'MMM D, YYYY',
-  now: dayjs(),
+  now: dayjs().utc(true),
 };
 
 export default DateInput;

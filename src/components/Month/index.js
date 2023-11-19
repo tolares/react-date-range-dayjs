@@ -104,7 +104,7 @@ class Month extends PureComponent {
 }
 
 Month.defaultProps = {
-  now: dayjs(),
+  now: dayjs().utc(true),
   readOnly: false,
   selecting: false,
 };
