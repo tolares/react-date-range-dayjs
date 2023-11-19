@@ -10,14 +10,20 @@ const [state, setState] = useState([
       startDate: dayjs().utc(true),
       endDate:  dayjs().utc(true),
       color: '#000',
-      textColor: 'red'
+      textColor: 'red',
+      key: 'selection'
     }
   ]);
 
 <Calendar
+  dragSelectionEnabled={false}
   showDateDisplay={false}
   displayMode="dateRange"
-  onChange={item => {}}
+  onChange={item => setState([{
+    startDate: item,
+    endDate: item,
+    key:'selection'
+  }])}
   ranges={state}
   maxDate={dayjs().utc(true)}
   weekStartsOn={0}
