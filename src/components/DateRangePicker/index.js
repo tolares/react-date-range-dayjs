@@ -21,19 +21,21 @@ class DateRangePicker extends Component {
     const { focusedRange } = this.state;
     return (
       <div className={classnames(this.styles.dateRangePickerWrapper, this.props.className)}>
-        {<DefinedRange
-          focusedRange={focusedRange}
-          onPreviewChange={value =>
-            this.dateRange.updatePreview(
-              value ? this.dateRange.calcNewSelection(value, typeof value === 'string') : null
-            )
-          }
-          {...this.props}
-          range={this.props.ranges[focusedRange[0]]}
-          className={undefined}
-          inputRanges={defaultInputRanges(this.props.now)}
-          staticRanges={defaultStaticRanges(this.props.now)}
-        />}
+        {
+          <DefinedRange
+            focusedRange={focusedRange}
+            onPreviewChange={value =>
+              this.dateRange.updatePreview(
+                value ? this.dateRange.calcNewSelection(value, typeof value === 'string') : null
+              )
+            }
+            {...this.props}
+            range={this.props.ranges[focusedRange[0]]}
+            className={undefined}
+            inputRanges={defaultInputRanges(this.props.now)}
+            staticRanges={defaultStaticRanges(this.props.now)}
+          />
+        }
         <DateRange
           onRangeFocusChange={focusedRange => this.setState({ focusedRange })}
           focusedRange={focusedRange}
@@ -48,8 +50,12 @@ class DateRangePicker extends Component {
 
 DateRangePicker.defaultProps = {
   now: dayjs().utc(true),
-  maxDate: dayjs().utc(true).add(20, 'year'),
-  minDate: dayjs().utc(true).subtract(100, 'year'),
+  maxDate: dayjs()
+    .utc(true)
+    .add(20, 'year'),
+  minDate: dayjs()
+    .utc(true)
+    .subtract(100, 'year'),
 };
 
 DateRangePicker.propTypes = {

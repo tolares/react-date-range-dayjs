@@ -38,17 +38,13 @@ class DateRange extends Component {
       endDate = value.endDate;
     } else if (focusedRange[1] === 0) {
       // startDate selection
-      const dayOffset = (endDate || now)
-        .diff(startDate, 'day');
+      const dayOffset = (endDate || now).diff(startDate, 'day');
       const calculateEndDate = () => {
         if (moveRangeOnFirstSelection) {
           return value.add(dayOffset, 'day');
         }
         if (retainEndDateOnFirstSelection) {
-          if (
-            !endDate ||
-            value.isBefore(endDate, 'day')
-          ) {
+          if (!endDate || value.isBefore(endDate, 'day')) {
             return endDate;
           }
           return value;

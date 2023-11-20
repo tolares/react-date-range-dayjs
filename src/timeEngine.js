@@ -29,6 +29,5 @@ dayjs.extend(localizedFormat);
 dayjs.extend(updateLocale);
 dayjs.extend(utc);
 
-
 export { dayjs };
 export default dayjs;

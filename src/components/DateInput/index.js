@@ -10,7 +10,7 @@ class DateInput extends PureComponent {
     this.state = {
       invalid: false,
       changed: false,
-      value: this.formatDate(props)
+      value: this.formatDate(props),
     };
   }
 
@@ -66,7 +66,8 @@ class DateInput extends PureComponent {
     const { className, readOnly, placeholder, ariaLabel, disabled, onFocus } = this.props;
     const { value, invalid } = this.state;
     return (
-      <span className={classnames('rdrDateInput', readOnly ? 'rdrDateInputReadOnly' : null, className)}>
+      <span
+        className={classnames('rdrDateInput', readOnly ? 'rdrDateInputReadOnly' : null, className)}>
         <input
           readOnly={readOnly}
           disabled={disabled || readOnly}

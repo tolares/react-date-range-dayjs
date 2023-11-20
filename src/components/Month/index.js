@@ -21,7 +21,16 @@ function renderWeekdays(now, styles) {
 
 class Month extends PureComponent {
   render() {
-    const { displayMode, focusedRange, drag, styles, disabledDates, disabledDay, now, dateOptions } = this.props;
+    const {
+      displayMode,
+      focusedRange,
+      drag,
+      styles,
+      disabledDates,
+      disabledDay,
+      now,
+      dateOptions,
+    } = this.props;
     if (dateOptions.weekStartsOn != null) {
       dayjs.updateLocale(dateOptions.locale, {
         weekStart: dateOptions.weekStartsOn,

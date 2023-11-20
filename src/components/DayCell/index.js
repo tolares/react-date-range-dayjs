@@ -19,7 +19,16 @@ class DayCell extends Component {
     }
   };
   handleMouseEvent = event => {
-    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly, selecting } = this.props;
+    const {
+      day,
+      disabled,
+      onPreviewChange,
+      onMouseEnter,
+      onMouseDown,
+      onMouseUp,
+      readOnly,
+      selecting,
+    } = this.props;
     if (disabled) {
       onPreviewChange();
       return;
@@ -96,7 +105,7 @@ class DayCell extends Component {
     );
   };
 
-  checkDayInRange= (day, range) => {
+  checkDayInRange = (day, range) => {
     let startDate = range.startDate || this.props.now;
     let endDate = range.endDate || this.props.now;
     if (endDate?.isBefore(startDate, 'day')) {
@@ -105,12 +114,11 @@ class DayCell extends Component {
     startDate = startDate ? startDate.endOf('day') : null;
     endDate = endDate ? endDate.startOf('day') : null;
     const isInRange =
-      (!startDate || day.isAfter(startDate, 'day')) &&
-      (!endDate || day.isBefore(endDate, 'day'));
+      (!startDate || day.isAfter(startDate, 'day')) && (!endDate || day.isBefore(endDate, 'day'));
     const isStartEdge = !isInRange && day.isSame(startDate, 'day');
     const isEndEdge = !isInRange && day.isSame(endDate, 'day');
-    return {isInRange, isStartEdge, isEndEdge};
-  }
+    return { isInRange, isStartEdge, isEndEdge };
+  };
 
   renderSelectionPlaceholders = () => {
     const { styles, ranges, day, displayMode, date, color } = this.props;
@@ -151,9 +159,9 @@ class DayCell extends Component {
     const { ranges, day } = this.props;
     return ranges.reduce((textColor, range) => {
       const { isInRange, isStartEdge, isEndEdge } = this.checkDayInRange(day, range);
-      return (isInRange || isStartEdge || isEndEdge) ? range.textColor : textColor;
+      return isInRange || isStartEdge || isEndEdge ? range.textColor : textColor;
     }, null);
-  }
+  };
 
   render() {
     const { dayContentRenderer } = this.props;
@@ -171,12 +179,13 @@ class DayCell extends Component {
         onKeyUp={this.handleKeyEvent}
         className={this.getClassNames(this.props.styles)}
         {...(this.props.disabled || this.props.isPassive ? { tabIndex: -1 } : {})}
-        style={{ color: this.props.color }}
-      >
+        style={{ color: this.props.color }}>
         {this.renderSelectionPlaceholders()}
         {this.renderPreviewPlaceholder()}
         <span className={this.props.styles.dayNumber}>
-          {dayContentRenderer?.(this.props.day) || <span style={{color: this.getTextColor()}}>{this.props.day.date()}</span>}
+          {dayContentRenderer?.(this.props.day) || (
+            <span style={{ color: this.getTextColor() }}>{this.props.day.date()}</span>
+          )}
         </span>
       </button>
     );

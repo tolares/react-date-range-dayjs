@@ -102,19 +102,21 @@ class DefinedRange extends Component {
             );
           })}
         </div>
-        {!readOnly && <div className={styles.inputRanges}>
-          {inputRanges.map((rangeOption, i) => (
-            <InputRangeField
-              key={i}
-              styles={styles}
-              label={rangeOption.label}
-              onFocus={() => this.setState({ focusedInput: i, rangeOffset: 0 })}
-              onBlur={() => this.setState({ rangeOffset: 0 })}
-              onChange={value => this.handleRangeChange(rangeOption.range(value, this.props))}
-              value={this.getRangeOptionValue(rangeOption)}
-            />
-          ))}
-        </div>}
+        {!readOnly && (
+          <div className={styles.inputRanges}>
+            {inputRanges.map((rangeOption, i) => (
+              <InputRangeField
+                key={i}
+                styles={styles}
+                label={rangeOption.label}
+                onFocus={() => this.setState({ focusedInput: i, rangeOffset: 0 })}
+                onBlur={() => this.setState({ rangeOffset: 0 })}
+                onChange={value => this.handleRangeChange(rangeOption.range(value, this.props))}
+                value={this.getRangeOptionValue(rangeOption)}
+              />
+            ))}
+          </div>
+        )}
         {footerContent}
       </div>
     );

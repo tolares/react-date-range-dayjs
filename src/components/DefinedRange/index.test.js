@@ -55,7 +55,9 @@ describe('DefinedRange tests', () => {
   });
 
   test('Should render dynamic static label contents correctly', () => {
-    const renderItalicLabelContent = () => <i className={'italic-label-content'}>{'Italic Content'}</i>;
+    const renderItalicLabelContent = () => (
+      <i className={'italic-label-content'}>{'Italic Content'}</i>
+    );
     const renderBoldLabelContent = () => <b className={'bold-label-content'}>{'Bold Content'}</b>;
     const renderSomethingElse = () => <img className={'random-image'} />;
 
