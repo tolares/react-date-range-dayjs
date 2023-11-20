@@ -1,11 +1,11 @@
 import React from 'react';
-import dayjs from 'dayjs';
+import dayjs from '../../timeEngine';
 import DateRange from '../DateRange';
 import renderer from 'react-test-renderer';
 
 let testRenderer = null;
 let instance = null;
-const endDate = dayjs();
+const endDate = dayjs().utc(true);
 const startDate = endDate.subtract(7, 'day');
 
 const commonProps = {

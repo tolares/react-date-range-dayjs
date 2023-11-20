@@ -375,18 +375,6 @@
   }
 }
 
-.rdrCalendarWrapper:not(.rdrDateRangeWrapper) .rdrDayHovered .rdrDayNumber:after{
-  content: '';
-  border: 1px solid currentColor;
-  border-radius: 1.333em;
-  position: absolute;
-  top: -2px;
-  bottom: -2px;
-  left: 0px;
-  right: 0px;
-  background: transparent;
-}
-
 .rdrDayPassive{
   pointer-events: none;
   .rdrDayNumber span{

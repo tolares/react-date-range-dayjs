@@ -1,23 +1,13 @@
 /* eslint-disable no-fallthrough */
 import classnames from 'classnames';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import dayjs from '../../timeEngine';
 
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isSameOrAfter);
-dayjs.extend(isoWeek);
 class DayCell extends Component {
   constructor(props, context) {
     super(props, context);
-
-    this.state = {
-      hover: false,
-      active: false,
-    };
+    this.active = React.createRef(false);
   }
 
   handleKeyEvent = event => {
@@ -29,9 +19,7 @@ class DayCell extends Component {
     }
   };
   handleMouseEvent = event => {
-    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly } = this.props;
-    const stateChanges = {};
-    if (readOnly) return;
+    const { day, disabled, onPreviewChange, onMouseEnter, onMouseDown, onMouseUp, readOnly, selecting } = this.props;
     if (disabled) {
       onPreviewChange();
       return;
@@ -39,29 +27,23 @@ class DayCell extends Component {
 
     switch (event.type) {
       case 'mouseenter':
+        if (readOnly) break;
         onMouseEnter(day);
         onPreviewChange(day);
-        stateChanges.hover = true;
-        break;
-      case 'blur':
-      case 'mouseleave':
-        stateChanges.hover = false;
         break;
       case 'mousedown':
-        stateChanges.active = true;
-        onMouseDown(day);
+        if (readOnly) break;
+        this.active.current = true;
+        !selecting && onMouseDown(day);
         break;
       case 'mouseup':
         event.stopPropagation();
-        stateChanges.active = false;
-        onMouseUp(day);
+        this.active.current = false;
+        !readOnly && onMouseUp(day);
         break;
       case 'focus':
-        onPreviewChange(day);
+        !readOnly && onPreviewChange(day);
         break;
-    }
-    if (Object.keys(stateChanges).length) {
-      this.setState(stateChanges);
     }
   };
   getClassNames = () => {
@@ -85,8 +67,7 @@ class DayCell extends Component {
       [styles.dayEndOfWeek]: isEndOfWeek,
       [styles.dayStartOfMonth]: isStartOfMonth,
       [styles.dayEndOfMonth]: isEndOfMonth,
-      [styles.dayHovered]: this.state.hover,
-      [styles.dayActive]: this.state.active,
+      [styles.dayActive]: this.active.current,
       [styles.dayReadOnly]: this.props.readOnly,
     });
   };
@@ -203,7 +184,8 @@ class DayCell extends Component {
 }
 
 DayCell.defaultProps = {
-  now: dayjs(),
+  now: dayjs().utc(true),
+  selecting: false,
 };
 
 export const rangeShape = PropTypes.shape({
@@ -215,7 +197,6 @@ export const rangeShape = PropTypes.shape({
   autoFocus: PropTypes.bool,
   disabled: PropTypes.bool,
   showDateDisplay: PropTypes.bool,
-  readOnly: false,
 });
 
 DayCell.propTypes = {
@@ -247,6 +228,7 @@ DayCell.propTypes = {
   dayContentRenderer: PropTypes.func,
   now: PropTypes.object,
   readOnly: PropTypes.bool,
+  selecting: PropTypes.bool,
 };
 
 export default DayCell;

@@ -43,8 +43,8 @@ export function findNextRangeIndex(ranges, currentRangeIndex = -1) {
 export function getMonthDisplayRange(date, dateOptions, fixedHeight) {
   const startDateOfMonth = date.startOf('month');
   const endDateOfMonth = date.endOf('month');
-  const startDateOfCalendar = startDateOfMonth.startOf('isoWeek');
-  let endDateOfCalendar = endDateOfMonth.endOf('isoWeek');
+  const startDateOfCalendar = startDateOfMonth.startOf('week');
+  let endDateOfCalendar = endDateOfMonth.endOf('week');
   if (fixedHeight && endDateOfCalendar.diff(startDateOfCalendar, 'day') <= 34) {
     endDateOfCalendar = endDateOfCalendar.add(7, 'day');
   }
@@ -79,4 +79,18 @@ export function getIntervals(currentDay, closeDay) {
     currentDate = currentDate.add(1, 'day');
   }
   return dateRanges;
+}
+
+export function checkRanges(ranges, component) {
+  ranges.forEach((range) => {
+    if(range.startDate && !range.startDate.isUTC()) throw new Error('Invalid range `startDate` UTC dayjs object at ' + component);
+    if(range.endDate && !range.endDate.isUTC()) throw new Error('Invalid range `endDate` UTC dayjs object at' + component);
+  });
+}
+
+export function checkProps(props, component) {
+  if(props.now && !props.now.isUTC()) throw new Error('Invalid `now` UTC dayjs object at' + component);
+  if(props.maxDate && !props.maxDate.isUTC()) throw new Error('Invalid `maxDate` UTC dayjs object at ' + component);
+  if(props.minDate && !props.minDate.isUTC()) throw new Error('Invalid `minDate` UTC dayjs object at ' + component);
+  if(props.ranges) checkRanges(props.ranges, component);
 }

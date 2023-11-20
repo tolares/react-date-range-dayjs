@@ -1,22 +1,18 @@
 /* eslint-disable no-fallthrough */
-import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import weekday from 'dayjs/plugin/weekday';
-
 import { getMonthDisplayRange, getIntervals } from '../../utils';
 import DayCell, { rangeShape } from '../DayCell';
+import dayjs from '../../timeEngine';
 
-dayjs.extend(weekday);
-// eslint-disable-next-line no-unused-vars
-function renderWeekdays(now, styles, _dateOptions, _weekdayDisplayFormat) {
-  const startOfWeek = now.startOf('isoWeek');
-  const endOfWeek = now.endOf('isoWeek');
+function renderWeekdays(now, styles) {
+  const startOfWeek = now.startOf('week');
+  const endOfWeek = now.endOf('week');
   return (
     <div className={styles.weekDays}>
       {getIntervals(startOfWeek, endOfWeek).map((day, i) => (
         <span className={styles.weekDay} key={i}>
-          {dayjs.weekdaysShort()[day.weekday()]}
+          {dayjs.weekdaysShort()[day.day()]}
         </span>
       ))}
     </div>
@@ -25,7 +21,14 @@ function renderWeekdays(now, styles, _dateOptions, _weekdayDisplayFormat) {
 
 class Month extends PureComponent {
   render() {
-    const { displayMode, focusedRange, drag, styles, disabledDates, disabledDay, now } = this.props;
+    const { displayMode, focusedRange, drag, styles, disabledDates, disabledDay, now, dateOptions } = this.props;
+    if (dateOptions.weekStartsOn != null) {
+      dayjs.updateLocale(dateOptions.locale, {
+        weekStart: dateOptions.weekStartsOn,
+      });
+      now.$locale().weekStart = dateOptions.weekStartsOn;
+    }
+    dayjs.locale(dateOptions.locale);
     const minDate = this.props.minDate?.startOf('day');
     const maxDate = this.props.maxDate?.endOf('day');
     const monthDisplay = getMonthDisplayRange(
@@ -51,13 +54,7 @@ class Month extends PureComponent {
         {this.props.showMonthName ? (
           <div className={styles.monthName}>{dayjs.months()[this.props.month.month()]}</div>
         ) : null}
-        {this.props.showWeekDays &&
-          renderWeekdays(
-            now,
-            styles,
-            this.props.dateOptions,
-            this.props.weekdayDisplayFormat,
-          )}
+        {this.props.showWeekDays && renderWeekdays(now, styles)}
         <div className={styles.days} onMouseLeave={this.props.onMouseLeave}>
           {getIntervals(monthDisplay.start, monthDisplay.end).map((day, index) => {
             const isStartOfMonth = day.isSame(monthDisplay.startDateOfMonth, 'day');
@@ -75,10 +72,10 @@ class Month extends PureComponent {
                 day={day}
                 now={now}
                 preview={showPreview ? this.props.preview : null}
-                isWeekend={day.isoWeekday() == 7 || day.isoWeekday() == 6}
+                isWeekend={day.day() == 0 || day.day() == 6}
                 isToday={day.isSame(now, 'day')}
-                isStartOfWeek={day.isSame(day.startOf('isoWeek'), 'day')}
-                isEndOfWeek={day.isSame(day.endOf('isoWeek'), 'day')}
+                isStartOfWeek={day.isSame(day.startOf('week'), 'day')}
+                isEndOfWeek={day.isSame(day.endOf('week'), 'day')}
                 isStartOfMonth={isStartOfMonth}
                 isEndOfMonth={isEndOfMonth}
                 key={index}
@@ -96,6 +93,7 @@ class Month extends PureComponent {
                 onMouseEnter={this.props.onDragSelectionMove}
                 dragRange={drag.range}
                 drag={drag.status}
+                selecting={this.props.selecting}
               />
             );
           })}
@@ -106,8 +104,9 @@ class Month extends PureComponent {
 }
 
 Month.defaultProps = {
-  now: dayjs(),
+  now: dayjs().utc(true),
   readOnly: false,
+  selecting: false,
 };
 
 Month.propTypes = {
@@ -140,6 +139,7 @@ Month.propTypes = {
   fixedHeight: PropTypes.bool,
   now: PropTypes.object,
   readOnly: PropTypes.bool,
+  selecting: PropTypes.bool,
 };
 
 export default Month;

@@ -5,7 +5,7 @@ import { defaultInputRanges, defaultStaticRanges } from '../../defaultRanges';
 import { rangeShape } from '../DayCell';
 import InputRangeField from '../InputRangeField';
 import cx from 'classnames';
-import dayjs from 'dayjs';
+import dayjs from '../../timeEngine';
 
 class DefinedRange extends Component {
   constructor(props) {
@@ -138,8 +138,8 @@ DefinedRange.propTypes = {
 };
 
 DefinedRange.defaultProps = {
-  inputRanges: defaultInputRanges(dayjs()),
-  staticRanges: defaultStaticRanges(dayjs()),
+  inputRanges: defaultInputRanges(dayjs().utc(true)),
+  staticRanges: defaultStaticRanges(dayjs().utc(true)),
   ranges: [],
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   focusedRange: [0, 0],

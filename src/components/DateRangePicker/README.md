@@ -8,8 +8,8 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState([
   {
-    startDate: dayjs(),
-    endDate: dayjs().add(7, 'day'),
+    startDate: dayjs().utc(true),
+    endDate: dayjs().utc(true).add(7, 'day'),
     key: 'selection'
   }
 ]);
@@ -32,8 +32,8 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState([
   {
-    startDate: dayjs(),
-    endDate: dayjs().add(7, 'day'),
+    startDate: dayjs().utc(true),
+    endDate: dayjs().utc(true).add(7, 'day'),
     key: 'selection'
   }
 ]);
@@ -50,6 +50,36 @@ const [state, setState] = useState([
 />;
 ```
 
+
+#### Example: Max Date and Min Date
+
+```jsx inside Markdown
+import { useState } from 'react';
+import dayjs from 'dayjs';
+
+const [state, setState] = useState({
+  selection: {
+    startDate: dayjs().utc(true),
+    endDate: dayjs().utc(true),
+    key: 'selection'
+  },
+  compare: {
+    startDate: dayjs().utc(true).subtract(1, 'day'),
+    endDate: dayjs().utc(true).subtract(1, 'day'),
+    key: 'compare'
+  }
+});
+
+<DateRangePicker
+  onChange={item => {
+    setState({ ...state, ...item })
+  }}
+  minDate={dayjs().utc(true).subtract(20, 'day')}
+  maxDate={dayjs().utc(true)}
+  ranges={[state.selection, state.compare]}
+/>;
+```
+
 #### Example: Vertical Infinite
 
 ```jsx inside Markdown
@@ -58,13 +88,13 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection: {
-    startDate: dayjs(),
+    startDate: dayjs().utc(true),
     endDate: null,
     key: 'selection'
   },
   compare: {
-    startDate: dayjs(),
-    endDate: dayjs().add(3, 'day'),
+    startDate: dayjs().utc(true),
+    endDate: dayjs().utc(true).add(3, 'day'),
     key: 'compare'
   }
 });
@@ -72,8 +102,8 @@ const [state, setState] = useState({
 <DateRangePicker
   onChange={item => setState({ ...state, ...item })}
   months={1}
-  minDate={dayjs().add(-300, 'day')}
-  maxDate={dayjs().add(900, 'day')}
+  minDate={dayjs().utc(true).add(-300, 'day')}
+  maxDate={dayjs().utc(true).add(900, 'day')}
   direction="vertical"
   scroll={{ enabled: true }}
   ranges={[state.selection, state.compare]}
@@ -88,18 +118,18 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection1: {
-    startDate: dayjs().add(1, 'day'),
+    startDate: dayjs().utc(true).add(1, 'day'),
     endDate: null,
     key: 'selection1'
   },
   selection2: {
-    startDate: dayjs().add(4, 'day'),
-    endDate: dayjs().add(8, 'day'),
+    startDate: dayjs().utc(true).add(4, 'day'),
+    endDate: dayjs().utc(true).add(8, 'day'),
     key: 'selection2'
   },
   selection3: {
-    startDate: dayjs().add(8, 'day'),
-    endDate: dayjs().add(10, 'day'),
+    startDate: dayjs().utc(true).add(8, 'day'),
+    endDate: dayjs().utc(true).add(10, 'day'),
     key: 'selection3',
     autoFocus: false
   }
@@ -119,13 +149,13 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection1: {
-    startDate: dayjs().subtract(6, 'day'),
-    endDate: dayjs(),
+    startDate: dayjs().utc(true).subtract(6, 'day'),
+    endDate: dayjs().utc(true),
     key: 'selection1'
   },
   selection2: {
-    startDate: dayjs().add(1, 'day'),
-    endDate: dayjs().subtract(7, 'day'),
+    startDate: dayjs().utc(true).add(1, 'day'),
+    endDate: dayjs().utc(true).subtract(7, 'day'),
     key: 'selection2'
   }
 });
@@ -160,13 +190,13 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection1: {
-    startDate: dayjs().subtract(6, 'day'),
-    endDate: dayjs(),
+    startDate: dayjs().utc(true).subtract(6, 'day'),
+    endDate: dayjs().utc(true),
     key: 'selection1'
   },
   selection2: {
-    startDate: dayjs().add(1, 'day'),
-    endDate: dayjs().subtract(7, 'day'),
+    startDate: dayjs().utc(true).add(1, 'day'),
+    endDate: dayjs().utc(true).subtract(7, 'day'),
     key: 'selection2'
   }
 });
@@ -227,13 +257,13 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState({
   selection: {
-    startDate: dayjs(),
+    startDate: dayjs().utc(true),
     endDate: null,
     key: 'selection'
   },
   compare: {
-    startDate: dayjs(),
-    endDate: dayjs().add(3, 'day'),
+    startDate: dayjs().utc(true),
+    endDate: dayjs().utc(true).add(3, 'day'),
     key: 'compare'
   }
 });
@@ -241,8 +271,8 @@ const [state, setState] = useState({
 <DateRangePicker
   onChange={item => setState({ ...state, ...item })}
   months={1}
-  minDate={dayjs().subtract(30, 'day')}
-  maxDate={dayjs().add(30, 'day')}
+  minDate={dayjs().utc(true).subtract(30, 'day')}
+  maxDate={dayjs().utc(true).add(30, 'day')}
   direction="vertical"
   scroll={{ enabled: true }}
   ranges={[state.selection, state.compare]}
@@ -258,7 +288,7 @@ timezone where the current date could be the next or previous date of the actual
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-const now = dayjs().add(40, 'day');
+const now = dayjs().utc(true).add(40, 'day');
 
 const [state, setState] = useState({
   selection: {
@@ -294,7 +324,7 @@ which by default is white, we can customize it by setting the `textColor` range 
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-const now = dayjs().add(40, 'day');
+const now = dayjs().utc(true).add(40, 'day');
 
 const [state, setState] = useState({
   selection: {
@@ -331,7 +361,7 @@ Disable any effect of hovering or clicking over the Calendar.
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-const now = dayjs().add(40, 'day');
+const now = dayjs().utc(true).add(40, 'day');
 
 const [state, setState] = useState({
   selection: {

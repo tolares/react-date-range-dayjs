@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 
 const [state, setState] = useState([
     {
-      startDate: dayjs(),
+      startDate: dayjs().utc(true),
       endDate: null,
       key: 'selection'
     }

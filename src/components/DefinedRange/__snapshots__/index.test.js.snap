@@ -119,6 +119,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       styles={
         Object {
           "calendarWrapper": "rdrCalendarWrapper",
+          "calendarWrapperDragging": "rdrCalendarWrapper--dragging",
           "dateDisplay": "rdrDateDisplay",
           "dateDisplayItem": "rdrDateDisplayItem",
           "dateDisplayItemActive": "rdrDateDisplayItemActive",
@@ -131,7 +132,6 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "dayEndOfMonth": "rdrDayEndOfMonth",
           "dayEndOfWeek": "rdrDayEndOfWeek",
           "dayEndPreview": "rdrDayEndPreview",
-          "dayHovered": "rdrDayHovered",
           "dayInPreview": "rdrDayInPreview",
           "dayNumber": "rdrDayNumber",
           "dayPassive": "rdrDayPassive",
@@ -184,6 +184,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       styles={
         Object {
           "calendarWrapper": "rdrCalendarWrapper",
+          "calendarWrapperDragging": "rdrCalendarWrapper--dragging",
           "dateDisplay": "rdrDateDisplay",
           "dateDisplayItem": "rdrDateDisplayItem",
           "dateDisplayItemActive": "rdrDateDisplayItemActive",
@@ -196,7 +197,6 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "dayEndOfMonth": "rdrDayEndOfMonth",
           "dayEndOfWeek": "rdrDayEndOfWeek",
           "dayEndPreview": "rdrDayEndPreview",
-          "dayHovered": "rdrDayHovered",
           "dayInPreview": "rdrDayInPreview",
           "dayNumber": "rdrDayNumber",
           "dayPassive": "rdrDayPassive",

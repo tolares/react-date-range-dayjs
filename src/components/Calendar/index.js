@@ -1,29 +1,33 @@
+
 import { shallowEqualObjects } from 'shallow-equal';
 import classnames from 'classnames';
-import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import minMax from 'dayjs/plugin/minMax';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactList from 'react-list';
 
+import dayjs from './../../timeEngine';
 import { ariaLabelsShape } from '../../accessibility';
-import { calcFocusDate, generateStyles, getMonthDisplayRange, getIntervals } from '../../utils';
+import { calcFocusDate, generateStyles, getMonthDisplayRange, getIntervals, checkProps } from '../../utils';
 import { rangeShape } from '../DayCell';
 import coreStyles from '../../styles';
 import DateInput from '../DateInput';
 import Month from '../Month';
+import styles from '../../styles';
 
-dayjs.extend(localeData);
-dayjs.extend(minMax);
-dayjs.extend(localizedFormat);
 
 class Calendar extends PureComponent {
   constructor(props, context) {
     super(props, context);
+    checkProps(props, 'Calendar')
     this.dateOptions = { locale: props.locale };
     if (props.weekStartsOn !== undefined) this.dateOptions.weekStartsOn = props.weekStartsOn;
+    if (this.dateOptions.weekStartsOn != null) {
+      dayjs.updateLocale(this.dateOptions.locale, {
+        weekStart: this.dateOptions.weekStartsOn,
+      });
+      this.props.now.$locale().weekStart = this.dateOptions.weekStartsOn;
+    }
+    dayjs.locale(this.dateOptions.locale);
     this.styles = generateStyles([coreStyles, props.classNames]);
     this.listSizeCache = {};
     this.isFirstRender = true;
@@ -126,6 +130,13 @@ class Calendar extends PureComponent {
     if (prevProps.locale !== this.props.locale || prevProps.weekStartsOn !== this.props.weekStartsOn) {
       this.dateOptions = { locale: this.props.locale };
       if (this.props.weekStartsOn !== undefined) this.dateOptions.weekStartsOn = this.props.weekStartsOn;
+      if (this.dateOptions.weekStartsOn != null) {
+        dayjs.updateLocale(this.dateOptions.locale, {
+          weekStart: this.dateOptions.weekStartsOn,
+        });
+       this.props.now.$locale().weekStart = this.dateOptions.weekStartsOn;
+      }
+      dayjs.locale(this.dateOptions.locale);
       this.setState({
         monthNames: this.getMonthNames()
       });
@@ -240,14 +251,14 @@ class Calendar extends PureComponent {
     );
   };
   renderWeekdays() {
-    let currentDate = this.props.now.startOf('isoWeek');
-    const closeTime = this.props.now.endOf('isoWeek');
+    let currentDate = this.props.now.startOf('week');
+    const closeTime = this.props.now.endOf('week');
     const dateRanges = getIntervals(currentDate, closeTime);
     return (
       <div className={this.styles.weekDays}>
         {dateRanges.map((day, i) => (
           <span className={this.styles.weekDay} key={i}>
-            { dayjs.weekdaysShort()[day.weekday()] }
+            {dayjs.weekdaysShort()[day.day()]}
           </span>
         ))}
       </div>
@@ -319,18 +330,16 @@ class Calendar extends PureComponent {
   };
   onDragSelectionStart = date => {
     const { onChange, dragSelectionEnabled } = this.props;
+    if(!dragSelectionEnabled) return onChange && onChange(date);
 
-    if (dragSelectionEnabled) {
-      this.setState({
-        drag: {
-          status: true,
-          range: { startDate: date, endDate: date },
-          disablePreview: true
-        }
-      });
-    } else {
-      onChange && onChange(date);
-    }
+    this.setState({
+      drag: {
+        status: true,
+        range: { startDate: date, endDate: date },
+        disablePreview: true
+      },
+      selecting: true,
+    });
   };
 
   onDragSelectionEnd = date => {
@@ -339,17 +348,24 @@ class Calendar extends PureComponent {
     if (!dragSelectionEnabled) return;
 
     if (displayMode === 'date' || !this.state.drag.status) {
-      onChange && onChange(date);
+      if (this.props.focusedRange[1] === 1) {
+        this.setState({
+          selecting: false
+        }, () => onChange && onChange(date));
+      } else {
+        onChange && onChange(date);
+      }
       return;
     }
     const newRange = {
       startDate: this.state.drag.range.startDate,
       endDate: date
     };
+
     if (displayMode !== 'dateRange' || newRange.startDate.isSame(date, 'day')) {
-      this.setState({ drag: { status: false, range: {} } }, () => onChange && onChange(date));
+      this.setState({ drag: { status: false, range: {} }, selecting: true }, () => onChange && onChange(date));
     } else {
-      this.setState({ drag: { status: false, range: {} } }, () => {
+      this.setState({ drag: { status: false, range: {} }, selecting: false }, () => {
         updateRange && updateRange(newRange);
       });
     }
@@ -394,7 +410,7 @@ class Calendar extends PureComponent {
       navigatorRenderer,
       className,
       preview,
-      readOnly
+      readOnly,
     } = this.props;
     const { scrollArea, focusedDate } = this.state;
     const isVertical = direction === 'vertical';
@@ -406,7 +422,10 @@ class Calendar extends PureComponent {
     }));
     return (
       <div
-        className={classnames(this.styles.calendarWrapper, className)}
+        className={classnames(this.styles.calendarWrapper, className,
+          {
+            [styles.calendarWrapperSelecting]: this.state.selecting
+          })}
         onMouseUp={() => {
           if(readOnly) return;
           this.setState({ drag: { status: false, range: {} } })}
@@ -445,6 +464,7 @@ class Calendar extends PureComponent {
                   return (
                     <Month
                       {...this.props}
+                      selecting={this.state.selecting}
                       onPreviewChange={onPreviewChange || this.updatePreview}
                       preview={preview || this.state.preview}
                       ranges={ranges}
@@ -490,6 +510,7 @@ class Calendar extends PureComponent {
               return (
                 <Month
                   {...this.props}
+                  selecting={this.state.selecting}
                   onPreviewChange={onPreviewChange || this.updatePreview}
                   preview={preview || this.state.preview}
                   ranges={ranges}
@@ -538,8 +559,8 @@ Calendar.defaultProps = {
     enabled: false
   },
   direction: 'vertical',
-  maxDate: dayjs().add(20, 'year'),
-  minDate: dayjs().subtract(100, 'year'),
+  maxDate: dayjs().utc(true).add(20, 'year'),
+  minDate: dayjs().utc(true).subtract(100, 'year'),
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   startDatePlaceholder: 'Early',
   endDatePlaceholder: 'Continuous',
@@ -549,7 +570,7 @@ Calendar.defaultProps = {
   calendarFocus: 'forwards',
   preventSnapRefocus: false,
   ariaLabels: {},
-  now: dayjs(),
+  now: dayjs().utc(true),
   readOnly: false,
 };
 

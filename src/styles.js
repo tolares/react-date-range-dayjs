@@ -25,7 +25,6 @@ export default {
   dayStartPreview: 'rdrDayStartPreview',
   dayInPreview: 'rdrDayInPreview',
   dayEndPreview: 'rdrDayEndPreview',
-  dayHovered: 'rdrDayHovered',
   dayActive: 'rdrDayActive',
   dayReadOnly: 'rdrDayReadOnly',
   inRange: 'rdrInRange',
@@ -51,4 +50,5 @@ export default {
   infiniteMonths: 'rdrInfiniteMonths',
   monthsVertical: 'rdrMonthsVertical',
   monthsHorizontal: 'rdrMonthsHorizontal',
+  calendarWrapperSelecting: 'rdrCalendarWrapper--selecting',
 };
