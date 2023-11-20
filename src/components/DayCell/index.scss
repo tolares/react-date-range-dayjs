@@ -11,16 +11,24 @@
 }
 
 .rdrCalendarWrapper:not(.rdrCalendarWrapper--selecting) .rdrDay {
-  &:not(.rdrDayDisabled):hover .rdrDayNumber:after{
-    content: '';
-    border: 1px solid currentColor;
-    border-radius: 1.333em;
-    position: absolute;
-    top: -2px;
-    bottom: -2px;
-    left: 0px;
-    right: 0px;
-    background: transparent;
+  &:not(.rdrDayDisabled):hover {
+
+    .rdrDayNumber:after{
+      content: '';
+      border: 1px solid currentColor;
+      border-radius: 1.333em;
+      position: absolute;
+      top: -2px;
+      bottom: -2px;
+      left: 0px;
+      right: 0px;
+      background: transparent;
+    }
+
+    .rdrDayStartPreview, .rdrDayInPreview, .rdrDayEndPreview{
+      display: none;
+    }
+
   }
 }
 
