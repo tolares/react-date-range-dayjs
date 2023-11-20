@@ -119,7 +119,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       styles={
         Object {
           "calendarWrapper": "rdrCalendarWrapper",
-          "calendarWrapperDragging": "rdrCalendarWrapper--dragging",
+          "calendarWrapperSelecting": "rdrCalendarWrapper--selecting",
           "dateDisplay": "rdrDateDisplay",
           "dateDisplayItem": "rdrDateDisplayItem",
           "dateDisplayItemActive": "rdrDateDisplayItemActive",
@@ -172,7 +172,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
           "yearPicker": "rdrYearPicker",
         }
       }
-      value="∞"
+      value="-"
     />
     <InputRangeField
       key="1"
@@ -184,7 +184,7 @@ exports[`DefinedRange tests Should render dynamic static label contents correctl
       styles={
         Object {
           "calendarWrapper": "rdrCalendarWrapper",
-          "calendarWrapperDragging": "rdrCalendarWrapper--dragging",
+          "calendarWrapperSelecting": "rdrCalendarWrapper--selecting",
           "dateDisplay": "rdrDateDisplay",
           "dateDisplayItem": "rdrDateDisplayItem",
           "dateDisplayItemActive": "rdrDateDisplayItemActive",
