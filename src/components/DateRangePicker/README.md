@@ -353,6 +353,49 @@ const [state, setState] = useState({
 />;
 ```
 
+
+#### Example: Custom range selectorColor
+
+When setting the dates for a range, sometimes we need better contrast between the color and the
+border line that appears when hovering over the calendar days which by default is the same color
+as the range color, we can customize it by setting the `selectorColor` range property.
+
+```jsx inside Markdown
+import { useState } from 'react';
+import dayjs from 'dayjs';
+
+const now = dayjs().utc(true).add(40, 'day');
+
+const [state, setState] = useState({
+  selection: {
+    startDate: now,
+    endDate: now.add(3, 'day'),
+    key: 'selection',
+    color: 'red',
+    textColor: 'white',
+    selectorColor: 'green'
+  },
+  compare: {
+    startDate: now.subtract(1, 'week'),
+    endDate: now.add(3, 'day').subtract(1, 'week'),
+    key: 'compare',
+    textColor: 'black',
+    color: '#EEE'
+  }
+});
+
+<DateRangePicker
+  onChange={item => setState({ ...state, ...item })}
+  months={1}
+  scroll={{ enabled: false }}
+  direction="vertical"
+  minDate={now.subtract(50, 'day')}
+  maxDate={now.add(30, 'day')}
+  ranges={[state.selection, state.compare]}
+  now={now}
+/>;
+```
+
 #### Example: Read-Only
 
 Disable any effect of hovering or clicking over the Calendar.
