@@ -14,3 +14,10 @@ webpack/
 postcss.config.js
 styleguide.config.js
 yarn.lock
+*.tgz
+src
+jest.config.js
+setupTests.js
+.prettierrc
+.eslintignore
+CONTRIBUTING.md
