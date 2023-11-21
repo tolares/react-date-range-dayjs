@@ -100,7 +100,7 @@ class DayCell extends Component {
           [styles.dayInPreview]: isInRange,
           [styles.dayEndPreview]: isEndEdge,
         })}
-        style={{ color: focusedRange.selectorColor || preview.color }}
+        style={{ color: focusedRange?.selectorColor || preview.color }}
       />
     );
   };
@@ -179,7 +179,7 @@ class DayCell extends Component {
         onKeyUp={this.handleKeyEvent}
         className={this.getClassNames(this.props.styles)}
         {...(this.props.disabled || this.props.isPassive ? { tabIndex: -1 } : {})}
-        style={{ color: focusedRange.selectorColor || focusedRange.color || this.props.color }}>
+        style={{ color: focusedRange?.selectorColor || focusedRange?.color || this.props.color }}>
         {this.renderSelectionPlaceholders()}
         {this.renderPreviewPlaceholder()}
         <span className={this.props.styles.dayNumber}>
