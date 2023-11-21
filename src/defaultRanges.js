@@ -97,7 +97,7 @@ export const defaultInputRanges = (now = dayjs().utc(true)) =>
     {
       label: 'days starting today',
       range(value) {
-        const today = dayjs().utc(true);
+        const today = now;
         return {
           startDate: today,
           endDate: today.add(Math.max(Number(value), 1) - 1, 'day'),

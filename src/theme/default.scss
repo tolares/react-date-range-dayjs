@@ -279,41 +279,44 @@
  }
 }
 
-.rdrDayStartPreview, .rdrDayInPreview, .rdrDayEndPreview{
-  background: rgba(255, 255, 255, 0.09);
-  position: absolute;
-  top: 3px;
-  left: 0px;
-  right: 0px;
-  bottom: 3px;
-  pointer-events: none;
-  border: 0px solid currentColor;
-  z-index: 1;
-}
+.rdrCalendarWrapper--selecting {
 
+  .rdrDayStartPreview, .rdrDayInPreview, .rdrDayEndPreview{
+    background: rgba(255, 255, 255, 0.09);
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    right: 0px;
+    bottom: 3px;
+    pointer-events: none;
+    border: 0px solid currentColor;
+    z-index: 1;
+  }
 
-.rdrDayStartPreview{
-  border-top-width: 1px;
-  border-left-width: 1px;
-  border-bottom-width: 1px;
-  border-top-left-radius: 1.333em;
-  border-bottom-left-radius: 1.333em;
-  left: 0px;
-}
+  .rdrDayStartPreview{
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 1.333em;
+    border-bottom-left-radius: 1.333em;
+    left: 0px;
+  }
 
-.rdrDayInPreview{
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-}
+  .rdrDayInPreview{
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+  }
 
-.rdrDayEndPreview{
-  border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-top-right-radius: 1.333em;
-  border-bottom-right-radius: 1.333em;
-  right: 2px;
-  right: 0px;
+  .rdrDayEndPreview{
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-top-right-radius: 1.333em;
+    border-bottom-right-radius: 1.333em;
+    right: 2px;
+    right: 0px;
+  }
+
 }
 
 .rdrDefinedRangesWrapper{

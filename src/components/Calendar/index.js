@@ -436,7 +436,7 @@ class Calendar extends PureComponent {
     return (
       <div
         className={classnames(this.styles.calendarWrapper, className, {
-          [styles.calendarWrapperSelecting]: this.state.selecting,
+          [styles.calendarWrapperSelecting]: this.state.selecting || this.props.preview?.predefined,
         })}
         onMouseUp={() => {
           if (readOnly) return;
@@ -607,6 +607,7 @@ Calendar.propTypes = {
     startDate: PropTypes.object,
     endDate: PropTypes.object,
     color: PropTypes.string,
+    predefined: PropTypes.bool,
   }),
   dateDisplayFormat: PropTypes.string,
   monthDisplayFormat: PropTypes.string,
