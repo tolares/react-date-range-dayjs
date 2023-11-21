@@ -26,7 +26,8 @@ class DateRangePicker extends Component {
             focusedRange={focusedRange}
             onPreviewChange={value =>
               this.dateRange.updatePreview(
-                value ? this.dateRange.calcNewSelection(value, typeof value === 'string') : null
+                value ? this.dateRange.calcNewSelection(value, typeof value === 'string') : null,
+                true
               )
             }
             {...this.props}

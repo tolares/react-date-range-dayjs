@@ -81,7 +81,7 @@ class DayCell extends Component {
     });
   };
   renderPreviewPlaceholder = () => {
-    const { preview, day, styles } = this.props;
+    const { preview, day, styles, focusedRange } = this.props;
     if (!preview) return null;
     if (preview.startDate.isAfter(preview.endDate)) {
       const start = preview.startDate;
@@ -100,7 +100,7 @@ class DayCell extends Component {
           [styles.dayInPreview]: isInRange,
           [styles.dayEndPreview]: isEndEdge,
         })}
-        style={{ color: preview.color }}
+        style={{ color: focusedRange.selectorColor || preview.color }}
       />
     );
   };
@@ -164,7 +164,7 @@ class DayCell extends Component {
   };
 
   render() {
-    const { dayContentRenderer } = this.props;
+    const { dayContentRenderer, focusedRange } = this.props;
     return (
       <button
         type="button"
@@ -179,7 +179,7 @@ class DayCell extends Component {
         onKeyUp={this.handleKeyEvent}
         className={this.getClassNames(this.props.styles)}
         {...(this.props.disabled || this.props.isPassive ? { tabIndex: -1 } : {})}
-        style={{ color: this.props.color }}>
+        style={{ color: focusedRange.selectorColor || focusedRange.color || this.props.color }}>
         {this.renderSelectionPlaceholders()}
         {this.renderPreviewPlaceholder()}
         <span className={this.props.styles.dayNumber}>
@@ -202,6 +202,7 @@ export const rangeShape = PropTypes.shape({
   endDate: PropTypes.object,
   color: PropTypes.string,
   textColor: PropTypes.string,
+  selectorColor: PropTypes.string,
   key: PropTypes.string,
   autoFocus: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -213,6 +214,7 @@ DayCell.propTypes = {
   dayDisplayFormat: PropTypes.string,
   date: PropTypes.object,
   ranges: PropTypes.arrayOf(rangeShape),
+  focusedRange: rangeShape,
   preview: PropTypes.shape({
     startDate: PropTypes.object,
     endDate: PropTypes.object,

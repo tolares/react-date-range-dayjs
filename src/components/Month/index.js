@@ -78,6 +78,7 @@ class Month extends PureComponent {
               <DayCell
                 {...this.props}
                 ranges={ranges}
+                focusedRange={ranges[this.props.focusedRange[0]]}
                 day={day}
                 now={now}
                 preview={showPreview ? this.props.preview : null}
