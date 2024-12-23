@@ -41,8 +41,8 @@ npm install --save react dayjs
 You need to import skeleton and theme styles first.
 
 ```javascript
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range-dayjs/dist/styles.css'; // main style file
+import 'react-date-range-dayjs/dist/theme/default.css'; // theme css file
 ```
 
 ### `DatePicker`
@@ -79,8 +79,8 @@ class MyComponent extends Component {
   }
   render() {
     const selectionRange = {
-      startDate: dayjs(),
-      endDate: dayjs(),
+      startDate: dayjs.utc(),
+      endDate: dayjs.utc(),
       key: 'selection'
     };
     return <DateRangePicker ranges={[selectionRange]} onChange={this.handleSelect} />;
